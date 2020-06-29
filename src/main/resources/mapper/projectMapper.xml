@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.maidi.saas.dao.ProjectDao">
+
+    <sql id="base_column_list">
+        p.id,
+        p.sequence,
+        p.name projectName,
+        p.code projectCode,
+        p.description projectDesc,
+        p.ext_fields extFields,
+        p.plan_start_time planStartTime,
+        p.plan_end_time planEndTime,
+        p.actual_start_time actualStartTime,
+        p.actual_end_time actualEndTime,
+        p.create_time createTime,
+        d.id projectTypeId,
+        d.name projectType,
+        s.id projectStageId,
+        s.name projectStage,
+        m.id projectManagerId,
+        m.name projectManager,
+        bd.id projectBDId,
+        bd.name projectBD,
+        cs.id customerId,
+        cs.name customer
+    </sql>
+
+    <select id="getProjectById" resultType="ProjectVo" parameterType="int">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM sm_project p
+        INNER JOIN sm_user m ON m.id = p.manager_id
+        INNER JOIN sm_user bd ON bd.id = p.bd_id
+        INNER JOIN sm_customer cs ON p.customer_id = cs.id
+        INNER JOIN sm_dict d ON d.id = p.type_id
+        INNER JOIN sm_dict s ON s.id = p.stage_id
+        WHERE p.id=#{id}
+    </select>
+
+    <select id="getAllProjects" resultType="OptionDict">
+        SELECT id,name FROM sm_project
+    </select>
+
+    <select id="queryProject" resultType="ProjectQuery" parameterType="SearchDict">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM sm_project p
+        INNER JOIN sm_user m ON m.id = p.manager_id
+        INNER JOIN sm_user bd ON bd.id = p.bd_id
+        INNER JOIN sm_customer cs ON p.customer_id = cs.id
+        INNER JOIN sm_dict d ON d.id = p.type_id
+        INNER JOIN sm_dict s ON s.id = p.stage_id
+        WHERE 1=1
+        <if test="name!=null and name!=''">
+            AND p.name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="code!=null and code!=''">
+            AND p.code LIKE CONCAT('%',#{code},'%')
+        </if>
+        <if test="stage!=null and stage!=''">
+            AND s.name LIKE CONCAT('%',#{stage},'%')
+        </if>
+    </select>
+
+    <insert id="saveProject" parameterType="ProjectVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO sm_project (
+            name,
+            code,
+            description,
+            ext_fields,
+            manager_id,
+            customer_id,
+            bd_id,
+            stage_id,
+            type_id,
+            plan_start_time,
+            plan_end_time,
+            actual_start_time,
+            actual_end_time,
+            create_time,
+            update_time
+           )
+        VALUES (
+        #{projectName},#{projectCode},#{projectDesc},
+        #{extFields},#{projectManagerId},#{customerId},
+        #{projectBDId},#{projectStageId},#{projectTypeId},
+        #{planStartTime},#{planEndTime},#{actualStartTime},
+        #{actualEndTime},now(),now()
+       )
+    </insert>
+
+    <delete id="deleteProjectById" parameterType="int">
+        DELETE FROM sm_project WHERE id=#{id}
+    </delete>
+
+    <update id="updateProjectById" parameterType="ProjectVo">
+        UPDATE sm_project
+        <trim prefix="set" suffixOverrides=",">
+            <if test="projectName != null">name=#{projectName},</if>
+            <if test="projectCode != null">code=#{projectCode},</if>
+            <if test="projectDesc != null">description=#{projectDesc},</if>
+            <if test="extFields != null">ext_fields=#{extFields},</if>
+            <if test="projectManagerId != null">manager_id=#{projectManagerId},</if>
+            <if test="customerId != null">customer_id=#{customerId},</if>
+            <if test="projectBDId != null">bd_id=#{projectBDId},</if>
+            <if test="projectStageId != null">stage_id=#{projectStageId},</if>
+            <if test="projectTypeId != null">type_id=#{projectTypeId},</if>
+            <if test="planStartTime != null">plan_start_time=#{planStartTime},</if>
+            <if test="planEndTime != null">plan_end_time=#{planEndTime},</if>
+            <if test="actualStartTime != null">actual_start_time=#{actualStartTime},</if>
+            <if test="actualEndTime != null">actual_end_time=#{actualEndTime},</if>
+            update_time=now()
+        </trim>
+        WHERE id=#{id}
+    </update>
+    <update id="updateStageById" parameterType="ProjectVo">
+        UPDATE sm_project
+        <trim prefix="set" suffixOverrides=",">
+            <if test="projectDesc != null">description=#{projectDesc},</if>
+            <if test="projectStageId != null">stage_id=#{projectStageId},</if>
+            update_time=now()
+        </trim>
+        WHERE id=#{id}
+    </update>
+</mapper>

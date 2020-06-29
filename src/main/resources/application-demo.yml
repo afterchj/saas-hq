@@ -1,0 +1,25 @@
+
+server:
+  port: 8080
+  servlet:
+    context-path: /ssm
+spring:
+  profiles: demo
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rm-bp11dok2aa3314h5hfo.mysql.rds.aliyuncs.com/ssm_hq?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: chenhongjian
+    password: chj123456
+  freemarker:
+    prefer-file-system-access: false
+feign:
+  hystrix:
+    enabled: true
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    service-url:
+#      defaultZone: http://127.0.0.1:8761/eureka #,http://localhost:8762/eureka
+      defaultZone: http://test:123456@47.111.232.105:8761/eureka/

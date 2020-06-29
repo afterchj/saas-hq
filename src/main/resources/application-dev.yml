@@ -1,0 +1,22 @@
+server:
+  port: 8081
+spring:
+  profiles: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.1.132:3306/ssm_hq?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: root
+    password: root
+  freemarker:
+    prefer-file-system-access: false
+feign:
+  hystrix:
+    enabled: true
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    service-url:
+#      defaultZone: http://192.168.1.37:8761/eureka #,http://localhost:8762/eureka
+      defaultZone: http://test:123456@47.111.232.105:8761/eureka/

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.maidi.saas.dao.TaskDao">
+
+    <resultMap type="TaskQuery" id="taskMap">
+        <result column="id" property="id"/>
+        <result column="principal" property="principal"/>
+        <result column="percentage" property="percentage"/>
+        <result column="create_time" property="createTime"/>
+        <collection property="content" select="getTaskListById" column="id" fetchType="lazy"/>
+    </resultMap>
+
+    <sql id="base_column_list">
+       t.id,
+       description,
+       percentage,
+       principal,
+       priority,
+       workload,
+       stage,
+       time_sheet timeSheet,
+       plan_start_time planStartTime,
+       plan_end_time planEndTime,
+       c.complete_rate,
+       c.operator,
+       c.notes,
+       c.create_time
+    </sql>
+
+    <select id="getProjects" resultType="OptionDict">
+        SELECT id,name FROM sm_project
+    </select>
+
+    <select id="listTree" resultType="TreeVo" parameterType="int">
+        SELECT id,name,level,project_id projectId ,parent_id parentId FROM sm_task
+        <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
+        <where>
+            <if test="projectId!=null and projectId!=''">
+                and project_id=#{projectId} and parent_id is null
+            </if>
+            <if test="parentId!=null and parentId!=''">
+                and parent_id=#{parentId} and level =#{level}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTimeSheet" resultType="TimeSheetVo">
+        SELECT id,labor_hour laborHour FROM sm_timesheet
+    </select>
+
+    <select id="getAll" resultMap="taskMap">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id GROUP BY t.id
+    </select>
+
+    <select id="getTaskListById" resultType="TaskCommentVo" parameterType="int">
+        SELECT complete_rate completeRate,operator,notes,create_time createTime FROM sm_task_comment where task_id=#{id}
+    </select>
+
+    <select id="getTaskById" resultType="TaskVo" parameterType="int">
+        SELECT
+           id,
+           stage,
+           description,
+           percentage,
+           principal,
+           priority,
+           workload,
+           name taskName,
+           time_sheet timeSheet,
+           plan_start_time planStartTime,
+           plan_end_time planEndTime
+        FROM sm_task WHERE id=#{id}
+    </select>
+
+    <select id="queryTask" resultMap="taskMap" parameterType="SearchDict">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
+        WHERE 1=1
+        <if test="principal!=null and principal!=''">
+            AND t.principal LIKE CONCAT('%',#{principal},'%')
+        </if>
+        <if test="updateTime!=null and updateTime!=''">
+            AND t.update_time BETWEEN #{updateTime} AND NOW()
+        </if>
+        GROUP BY t.id
+    </select>
+    <select id="queryTaskLog" resultType="TaskLogVo" parameterType="SearchDict">
+        SELECT
+        t.id,
+        t.principal,
+        t.create_time createTime,
+        l.operator,
+        l.notes,
+        l.status,
+        l.update_time updateTime
+        FROM
+        sm_task t
+        LEFT JOIN sm_task_log l ON t.id = l.task_id
+        <where>
+            <if test="principal!=null and principal!=''">
+                AND t.principal LIKE CONCAT('%',#{principal},'%')
+            </if>
+            <if test="updateTime!=null and updateTime!=''">
+                AND l.update_time BETWEEN #{updateTime} AND NOW()
+            </if>
+        </where>
+    </select>
+
+    <insert id="saveTask" parameterType="TaskVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO sm_task (
+         	project_id,
+            is_parent,
+            parent_id,
+            name,
+            level,
+            principal,
+            stage,
+            priority,
+            time_sheet,
+            workload,
+            percentage,
+            description,
+            plan_start_time,
+            plan_end_time,
+            create_time,
+            update_time
+          )
+        VALUES (
+        #{projectId},#{isParent},#{parentId},#{taskName},#{level},#{principal},#{stage},#{priority},#{timeSheet},#{workload},#{percentage},#{description},#{planStartTime},#{planEndTime},now(),now()
+        )
+    </insert>
+
+    <insert id="saveTaskComment" parameterType="TaskCommentVo">
+        INSERT INTO sm_task_comment (task_id,operator,notes,complete_rate) VALUES (#{taskId},#{operator},#{notes},#{completeRate});
+        UPDATE sm_task SET percentage=#{completeRate},update_time=now() WHERE id=#{taskId} ;
+    </insert>
+
+    <insert id="saveTaskLog" parameterType="TaskRemarkVo">
+        INSERT INTO sm_task_log (task_id,operator,notes,status) VALUES (#{taskId},#{operator},#{notes},#{status})
+    </insert>
+
+    <insert id="saveTimeSheet" parameterType="TimeSheetVo">
+        INSERT INTO sm_timesheet (name,laborHour) VALUES (#{laborName},#{laborHour})
+    </insert>
+
+    <insert id="saveTemplate" parameterType="TemplateVo">
+        INSERT INTO sm_template (project_id,name,notes,template_id,type_id) VALUES (#{projectId},#{templateName},#{notes},#{templateId},#{typeId})
+    </insert>
+
+    <select id="getType" parameterType="int" resultType="int">
+        SELECT type_id FROM sm_template
+        <where>
+            <if test="templateId !=null and templateId!=''">
+                AND id=#{templateId}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteTaskById" parameterType="int">
+        DELETE FROM sm_task WHERE id=#{id}
+    </delete>
+
+    <update id="updateTaskById" parameterType="TaskVo">
+        UPDATE sm_task
+        <trim prefix="set" suffixOverrides=",">
+            <if test="taskName != null">name=#{taskName},</if>
+            <if test="moduleId != null">module_id=#{moduleId},</if>
+            <if test="operatorId != null">operator_id=#{operatorId},</if>
+            <if test="ecode != null">ecode=#{ecode},</if>
+            <if test="notes != null">notes=#{notes},</if>
+            update_time=now()
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE sm_ecode SET operator_id=#{operatorId},status=#{status}, update_time=now() WHERE id IN
+        <foreach collection="list" index="index" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

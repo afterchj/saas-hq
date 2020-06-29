@@ -1,0 +1,48 @@
+
+spring:
+  application:
+    name: project-manager
+  profiles:
+    active: demo
+########################################################
+### Java Persistence Api --  Spring jpa ��������Ϣ
+# Specify the DBMS
+  jpa:
+    database: MYSQL
+# Show or not log for each sql query
+    show-sql: true
+    hibernate.show-sql.format-sql: true
+# Hibernate ddl auto (create, create-drop, update)
+    hibernate.ddl-auto: update
+# Naming strategy
+#[org.hibernate.cfg.ImprovedNamingStrategy  #org.hibernate.cfg.DefaultNamingStrategy]
+    hibernate.naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+# stripped before adding them to the entity manager)
+#\u5F00\u542FMybatis\u4E0B\u5212\u7EBF\u547D\u540D\u8F6C\u9A7C\u5CF0\u547D\u540D
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: /mapper/**/*Mapper.xml
+  type-aliases-package: com.maidi.saas.entity
+
+pagehelper:
+  # dialect: 默认情况下会使用 PageHelper 方式进行分页，如果想要实现自己的分页逻辑，可以实现 Dialect(com.github.pagehelper.Dialect) 接口
+  # 分页插件会自动检测当前的数据库链接，自动选择合适的分页方式（可以不设置）
+  helper-dialect: mysql
+  # 上面数据库设置后，下面的设置为true不会改变上面的结果（默认为true）
+  auto-dialect: true
+  page-size-zero: false # 默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者 RowBounds.limit = 0 就会查询出全部的结果
+  reasonable: true # 合法性，即纠错机制
+  # 默认值为 false，该参数对使用 RowBounds 作为分页参数时有效。（一般用不着）
+  offset-as-page-num: false
+  # 默认值为 false，RowBounds是否进行count查询（一般用不着）
+  row-bounds-with-count: false
+  #params: ④
+  #support-methods-arguments: 和params配合使用，具体可以看下面的讲解
+  # 默认值为 false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页
+  auto-runtime-dialect: false # 默认值为false。设置为 true 时，允许在运行时根据多数据源自动识别对应方言的分页,
+  # 与auto-runtime-dialect配合使用
+  close-conn: true
+  # 用于控制默认不带 count 查询的方法中，是否执行 count 查询，这里设置为true后，total会为-1
+  default-count: false
+  #dialect-alias: ⑥

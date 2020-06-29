@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.maidi.saas.dao.EcodeDao">
+
+    <sql id="base_column_list">
+        e.id,
+        e.ecode,
+        e.notes,
+        e.status,
+        e.update_time updateTime,
+        e.project_id projectId,
+        p.name projectName,
+        e.module_id moduleId,
+        m.name moduleName,
+        e.operator_id operatorId,
+        u.name operator
+    </sql>
+
+    <select id="getEcodeById" resultType="EcodeVo" parameterType="int">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM sm_ecode e
+        INNER JOIN sm_project_main p ON p.id = e.project_id
+        INNER JOIN sm_module m ON m.id = e.module_id
+        INNER JOIN sm_user u ON u.id = e.operator_id
+        WHERE p.id=#{id}
+    </select>
+
+    <select id="queryEcode" resultType="EcodeVo" parameterType="SearchDict">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM sm_ecode e
+        INNER JOIN sm_project_main p ON p.id = e.project_id
+        INNER JOIN sm_module m ON m.id = e.module_id
+        INNER JOIN sm_user u ON u.id = e.operator_id
+        WHERE 1=1
+        <if test="projectName!=null and projectName!=''">
+            AND p.name LIKE CONCAT('%',#{projectName},'%')
+        </if>
+        <if test="moduleName!=null and moduleName!=''">
+            AND m.name LIKE CONCAT('%',#{moduleName},'%')
+        </if>
+    </select>
+
+    <insert id="saveEcode" parameterType="EcodeVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO sm_ecode ( project_id, operator_id, module_id, ecode, notes )
+        VALUES (#{projectId},#{operatorId},#{moduleId},#{ecode},#{notes})
+    </insert>
+
+    <delete id="deleteEcodeById" parameterType="int">
+        DELETE FROM sm_ecode WHERE id=#{id}
+    </delete>
+
+    <update id="updateEcodeById" parameterType="EcodeVo">
+        UPDATE sm_ecode
+        <trim prefix="set" suffixOverrides=",">
+            <if test="projectId != null">project_id=#{projectId},</if>
+            <if test="moduleId != null">module_id=#{moduleId},</if>
+            <if test="operatorId != null">operator_id=#{operatorId},</if>
+            <if test="ecode != null">ecode=#{ecode},</if>
+            <if test="notes != null">notes=#{notes},</if>
+            update_time=now()
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE sm_ecode SET operator_id=#{operatorId},status=#{status}, update_time=now() WHERE id IN
+        <foreach collection="list" index="index" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>
