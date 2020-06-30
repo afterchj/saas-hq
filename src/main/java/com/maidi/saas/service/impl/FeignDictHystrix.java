@@ -2,7 +2,7 @@ package com.maidi.saas.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.maidi.saas.entity.dd.ResultDict;
-import com.maidi.saas.service.ZuulUserService;
+import com.maidi.saas.service.FeignDictService;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -13,22 +13,13 @@ import java.util.Map;
  */
 
 @Component
-public class ZuulUserHystrix implements ZuulUserService {
+public class FeignDictHystrix implements FeignDictService {
 
-    public String resultMap() {
+    @Override
+    public String listOption() {
         Map result = new HashMap();
         result.put("code", ResultDict.SYSTEM_ERROR.getCode());
         result.put("msg", ResultDict.SYSTEM_ERROR.getValue());
         return JSON.toJSONString(result);
-    }
-
-    @Override
-    public String getAllUser() {
-        return resultMap();
-    }
-
-    @Override
-    public String listOption() {
-        return resultMap();
     }
 }

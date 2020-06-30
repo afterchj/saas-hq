@@ -6,11 +6,8 @@ import com.maidi.saas.biz.TaskBiz;
 import com.maidi.saas.dao.TaskMapper;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.*;
-import com.maidi.saas.service.CommonService;
-import com.maidi.saas.service.ProjectService;
-import com.maidi.saas.service.TaskService;
-import com.maidi.saas.service.ZuulUserService;
-import com.maidi.saas.util.IdGenerator;
+import com.maidi.saas.service.*;
+import com.maidi.saas.utils.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +31,9 @@ public class SaasSmartHqApplicationTests {
     private ZuulUserService zuulUserService;
 
     @Autowired
+    private FeignDictService feignDictService;
+
+    @Autowired
     private TaskService taskService;
     @Autowired
     private TaskMapper taskMapper;
@@ -48,6 +48,12 @@ public class SaasSmartHqApplicationTests {
     public void testTree() {
         Map result = taskBiz.treeMap();
         System.out.println(JSON.toJSONString(result));
+    }
+
+    @Test
+    public void testDict() {
+//        log.warn("feign dict {}", feignDictService.listOption());
+        log.warn("zuul dict {}", zuulUserService.listOption());
     }
 
     @Test

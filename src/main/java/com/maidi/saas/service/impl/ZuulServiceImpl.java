@@ -19,4 +19,9 @@ public class ZuulServiceImpl implements ZuulUserService {
     public String getAllUser() {
         return zuulUserService.getAllUser();
     }
+
+    @Override
+    public String listOption() {
+        return zuulUserService.listOption();
+    }
 }

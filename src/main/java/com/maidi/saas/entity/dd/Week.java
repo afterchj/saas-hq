@@ -1,8 +1,9 @@
 package com.maidi.saas.entity.dd;
 
 /**
- * Created by nannan.li on 2019/8/19.
+ * Created by hjchen on 2020/6/19.
  */
+
 public enum Week {
 
     MON("mon","周一"),TUS("tus","周二"),WED("web","周三"),

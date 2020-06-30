@@ -1,4 +1,4 @@
-package com.maidi.saas.util;
+package com.maidi.saas.utils;
 
 
 import cn.hutool.core.date.DatePattern;

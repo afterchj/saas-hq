@@ -1,4 +1,4 @@
-package com.maidi.saas.util;
+package com.maidi.saas.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.pinyin4j.PinyinHelper;

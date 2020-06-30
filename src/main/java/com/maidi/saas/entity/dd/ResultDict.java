@@ -1,5 +1,12 @@
 package com.maidi.saas.entity.dd;
 
+/**
+ * @Classname SearchDict
+ * @Description TODO
+ * @Date 2020/6/12 10:56
+ * @Created by hjchen
+ */
+
 public enum ResultDict {
 
     SUCCESS("000", "成功"), SYSTEM_ERROR("200", "系统错误"),
