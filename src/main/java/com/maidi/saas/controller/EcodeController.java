@@ -50,7 +50,6 @@ public class EcodeController extends BaseController {
         return result;
     }
 
-
     @ApiOperation(value = "Ecode查看", notes = "根据ID查询Ecode")
     @RequestMapping(value = "/getEcodeById", method = RequestMethod.GET)
     public Map getProjectById(Integer id) {

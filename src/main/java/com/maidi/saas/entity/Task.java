@@ -33,6 +33,8 @@ public class Task extends BaseEntity {
     private String percentage;
     private Date planStartTime;
     private Date planEndTime;
+    @Column(columnDefinition = "tinyint default 1")
+    private Integer flag;
 
 
 //    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

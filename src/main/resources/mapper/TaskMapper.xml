@@ -116,6 +116,7 @@
             parent_id,
             name,
             level,
+            flag,
             principal,
             stage,
             priority,
@@ -129,7 +130,7 @@
             update_time
           )
         VALUES (
-        #{projectId},#{isParent},#{parentId},#{taskName},#{level},#{principal},#{stage},#{priority},#{timeSheet},#{workload},#{percentage},#{description},#{planStartTime},#{planEndTime},now(),now()
+        #{projectId},#{isParent},#{parentId},#{taskName},#{level},#{flag},#{principal},#{stage},#{priority},#{timeSheet},#{workload},#{percentage},#{description},#{planStartTime},#{planEndTime},now(),now()
         )
     </insert>
 

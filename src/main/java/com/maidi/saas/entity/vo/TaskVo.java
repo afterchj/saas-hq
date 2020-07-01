@@ -15,6 +15,7 @@ import java.util.Date;
 public class TaskVo extends BaseVo {
 
     private Integer level = 1;
+    private Integer flag = 1;
     private Integer sequence;
     private Integer projectId;
     private Integer parentId;

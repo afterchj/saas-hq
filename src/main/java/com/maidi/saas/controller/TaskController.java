@@ -63,7 +63,7 @@ public class TaskController extends BaseController {
 
     @ApiOperation(value = "新增任务", notes = "新增任务分解功能", produces = "application/json")
     @RequestMapping(value = "/addTask", method = RequestMethod.POST)
-    public Map add(@RequestBody(required = false) TaskVo taskVo) {
+    public Map addTask(@RequestBody(required = false) TaskVo taskVo) {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());

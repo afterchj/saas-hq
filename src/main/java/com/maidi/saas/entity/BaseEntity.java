@@ -19,4 +19,5 @@ public class BaseEntity {
     private Date createTime;
     @Column(columnDefinition = "datetime default now()")
     private Date updateTime;
+    private String other;
 }
