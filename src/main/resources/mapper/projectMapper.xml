@@ -52,8 +52,7 @@
         INNER JOIN sm_customer cs ON p.customer_id = cs.id
         INNER JOIN sm_dict d ON d.id = p.type_id
         INNER JOIN sm_dict s ON s.id = p.stage_id
-        LEFT JOIN (SELECT t.id,t.project_id,SUM(IFNULL(t.percentage,st.percentage)) projectProgress FROM sm_task t LEFT
-        JOIN sm_task st ON t.parent_id=st.id GROUP BY t.project_id) rs ON rs.project_id=p.id
+        LEFT JOIN (SELECT t.id,t.project_id,SUM(IFNULL(t.percentage,st.percentage)) projectProgress FROM sm_task t LEFT JOIN sm_task st ON t.parent_id=st.id GROUP BY t.project_id) rs ON rs.project_id=p.id
         <where>
             <if test="name!=null and name!=''">
                 AND p.name LIKE CONCAT('%',#{name},'%')
