@@ -5,8 +5,8 @@
     <sql id="base_column_list">
         p.id,
         p.sequence,
-        p.name projectName,
-        p.code projectCode,
+        p.NAME projectName,
+        p.CODE projectCode,
         p.description projectDesc,
         p.ext_fields extFields,
         p.plan_start_time planStartTime,
@@ -14,16 +14,17 @@
         p.actual_start_time actualStartTime,
         p.actual_end_time actualEndTime,
         p.create_time createTime,
+        IFNULL(rs.projectProgress,'0') projectProgress,
         d.id projectTypeId,
-        d.name projectType,
+        d.NAME projectType,
         s.id projectStageId,
-        s.name projectStage,
+        s.NAME projectStage,
         m.id projectManagerId,
-        m.name projectManager,
+        m.NAME projectManager,
         bd.id projectBDId,
-        bd.name projectBD,
+        bd.NAME projectBD,
         cs.id customerId,
-        cs.name customer
+        cs.NAME customer
     </sql>
 
     <select id="getProjectById" resultType="ProjectVo" parameterType="int">
@@ -51,16 +52,19 @@
         INNER JOIN sm_customer cs ON p.customer_id = cs.id
         INNER JOIN sm_dict d ON d.id = p.type_id
         INNER JOIN sm_dict s ON s.id = p.stage_id
-        WHERE 1=1
-        <if test="name!=null and name!=''">
-            AND p.name LIKE CONCAT('%',#{name},'%')
-        </if>
-        <if test="code!=null and code!=''">
-            AND p.code LIKE CONCAT('%',#{code},'%')
-        </if>
-        <if test="stage!=null and stage!=''">
-            AND s.name LIKE CONCAT('%',#{stage},'%')
-        </if>
+        LEFT JOIN (SELECT t.id,t.project_id,SUM(IFNULL(t.percentage,st.percentage)) projectProgress FROM sm_task t LEFT
+        JOIN sm_task st ON t.parent_id=st.id GROUP BY t.project_id) rs ON rs.project_id=p.id
+        <where>
+            <if test="name!=null and name!=''">
+                AND p.name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="code!=null and code!=''">
+                AND p.code LIKE CONCAT('%',#{code},'%')
+            </if>
+            <if test="stage!=null and stage!=''">
+                AND s.name LIKE CONCAT('%',#{stage},'%')
+            </if>
+        </where>
     </select>
 
     <insert id="saveProject" parameterType="ProjectVo" keyProperty="id" useGeneratedKeys="true">
