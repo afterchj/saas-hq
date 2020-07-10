@@ -31,6 +31,8 @@ public interface TaskDao {
 
     List<TaskVo> getAll();
 
+    List<TaskInfo> queryTaskInfo(SearchDict dict);
+
     void saveTimeSheet(TimeSheetVo sheetVo);
 
     void updateTaskById(TaskVo taskVo);

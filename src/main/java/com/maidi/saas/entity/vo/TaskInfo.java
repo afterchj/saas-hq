@@ -1,25 +1,17 @@
 package com.maidi.saas.entity.vo;
 
-import com.maidi.saas.entity.TaskComment;
 import lombok.Data;
 
-import java.util.Date;
-import java.util.List;
-
 /**
- * @Classname TaskQuery
+ * @Classname TaskInfo
  * @Description TODO
- * @Date 2020/6/10 13:18
+ * @Date 2020/07/10 10:40
  * @Created by hjchen
  */
-
 @Data
-public class TaskQuery extends BaseVo {
-
+public class TaskInfo extends BaseVo {
     private String name;
     private String principal;
     private String percentage;
     private String planCycle;
-    private List<TaskComment> content;
-
 }

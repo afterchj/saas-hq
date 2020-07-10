@@ -43,4 +43,6 @@ public interface TaskService {
     Set<TreeVo> listTree(int projectId, int parentId,int level);
 
     List<OptionDict> getProjects();
+
+    List<TaskInfo> getTaskInfo(SearchDict dict);
 }

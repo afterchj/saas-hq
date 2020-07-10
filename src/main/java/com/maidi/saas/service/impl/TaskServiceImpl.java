@@ -97,4 +97,9 @@ public class TaskServiceImpl implements TaskService {
     public List<OptionDict> getProjects() {
         return taskDao.getProjects();
     }
+
+    @Override
+    public List<TaskInfo> getTaskInfo(SearchDict dict) {
+        return taskDao.queryTaskInfo(dict);
+    }
 }

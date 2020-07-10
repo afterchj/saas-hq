@@ -87,7 +87,7 @@ public class EcodeController extends BaseController {
 
     @ApiOperation(value = "修改Ecode", notes = "根据id修改Ecode")
     @RequestMapping(value = "/editEcode", method = RequestMethod.POST)
-    public Map edit(EcodeVo ecodeVo) {
+    public Map edit(@RequestBody(required = false) EcodeVo ecodeVo) {
         log.warn("id {} ecodeVo {}", ecodeVo.getId(), ecodeVo);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());

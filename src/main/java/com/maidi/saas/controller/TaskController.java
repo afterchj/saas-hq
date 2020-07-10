@@ -102,6 +102,17 @@ public class TaskController extends BaseController {
         return result;
     }
 
+    @ApiOperation(value = "获取任务详情", notes = "根据项目id或任务id查看任务详情")
+    @RequestMapping(value = "/queryTaskInfo", method = RequestMethod.GET)
+    public Map getTaskInfo(SearchDict dict) {
+        Map result = new HashMap();
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        List<TaskInfo> taskVoList = taskService.getTaskInfo(dict);
+        result.put("data", taskVoList);
+        return result;
+    }
+
     @ApiOperation(value = "日志维护记录容查询", notes = "任务日志管理功能")
     @RequestMapping(value = "/queryLog", method = RequestMethod.GET)
     public Map queryLog(SearchDict dict) {
@@ -160,7 +171,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/exportTemplate", method = RequestMethod.POST)
-    public Map exportTemplate(TemplateVo templateVo) {
+    public Map exportTemplate(@RequestBody(required = false) TemplateVo templateVo) {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
@@ -169,7 +180,7 @@ public class TaskController extends BaseController {
     }
 
     @RequestMapping(value = "/setTimeSheet", method = RequestMethod.POST)
-    public Map setTimeSheet(TimeSheetVo sheetVo) {
+    public Map setTimeSheet(@RequestBody(required = false) TimeSheetVo sheetVo) {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());

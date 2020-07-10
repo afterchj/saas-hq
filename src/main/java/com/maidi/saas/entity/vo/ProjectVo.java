@@ -2,15 +2,13 @@ package com.maidi.saas.entity.vo;
 
 import lombok.Data;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
+
 
 /**
  * @Classname ProjectVo
  * @Description TODO
- * @Date 2020/6/4 10:49
+ * @String 2020/6/4 10:49
  * @Created by hjchen
  */
 

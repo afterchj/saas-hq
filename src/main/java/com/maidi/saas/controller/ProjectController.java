@@ -1,5 +1,7 @@
 package com.maidi.saas.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.maidi.saas.entity.dd.ResultDict;
@@ -74,7 +76,7 @@ public class ProjectController extends BaseController {
     }
 
     @ApiOperation(value = "项目查询", notes = "根据条件查询项目列表")
-    @RequestMapping(value = "/queryList",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryList", method = RequestMethod.GET)
     public Map queryProject(SearchDict dict) {
         log.warn("dict {}", dict);
         Map result = new HashMap();
@@ -88,9 +90,11 @@ public class ProjectController extends BaseController {
     }
 
 
-    @ApiOperation(value = "测试创建项目", notes = " 新增项目测试")
+    @ApiOperation(value = "创建项目", notes = "新增项目")
     @RequestMapping(value = "/addProject", method = RequestMethod.POST)
-    public Map queryProjects(@RequestBody(required = false) ProjectVo projectVo) {
+    public Map queryProjects(@RequestBody(required = false) String param) {
+        ProjectVo projectVo = JSONObject.parseObject(param,ProjectVo.class);
+//        log.warn("projectVo {}", param);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
@@ -111,10 +115,10 @@ public class ProjectController extends BaseController {
         return result;
     }
 
-    @ApiOperation(value = "创建项目", notes = "新增项目")
+    @ApiOperation(value = "测试创建项目", notes = "测试新增项目")
     @RequestMapping(value = "/addProject", method = RequestMethod.GET)
     public Map add(ProjectVo projectVo) {
-        log.warn("projectVo {}", projectVo);
+        log.warn("params {}", projectVo);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
@@ -125,7 +129,7 @@ public class ProjectController extends BaseController {
 
     @ApiOperation(value = "修改项目", notes = "根据id修改项目")
     @RequestMapping(value = "/editProject", method = RequestMethod.POST)
-    public Map edit(ProjectVo projectVo) {
+    public Map edit(@RequestBody(required = false) ProjectVo projectVo) {
         log.warn("projectVo {} ", projectVo);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
@@ -136,7 +140,7 @@ public class ProjectController extends BaseController {
 
     @ApiOperation(value = "调整项目阶段", notes = "根据id调整项目阶段")
     @RequestMapping(value = "/updateStage", method = RequestMethod.POST)
-    public Map updateStage(ProjectVo projectVo) {
+    public Map updateStage(@RequestBody(required = false) ProjectVo projectVo) {
         log.warn("projectVo {} ", projectVo);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());

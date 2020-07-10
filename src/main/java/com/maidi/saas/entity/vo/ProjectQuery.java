@@ -26,6 +26,9 @@ public class ProjectQuery extends BaseVo {
     private String projectProgress;
     private Date planStartTime;
     private Date planEndTime;
+    private String planCycle="";
     private Date actualStartTime;
     private Date actualEndTime;
+    private String actualCycle="";
+
 }

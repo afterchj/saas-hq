@@ -40,7 +40,7 @@ public class MySwagger2 {
                 .title("项目管理模块接口文档") //设置文档的标题
                 .description("线上查看，测试接口") // 设置文档的描述
                 .version(VERSION) // 设置文档的版本信息-> 1.0.0 Version information
-                .termsOfServiceUrl("http://www.baidu.com") // 设置文档的License信息->1.3 License information
+                .termsOfServiceUrl("http://47.111.232.105:8081/document/index?document_id=59") // 设置文档的License信息->1.3 License information
                 .build();
     }
 }

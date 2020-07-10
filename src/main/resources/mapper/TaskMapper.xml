@@ -4,6 +4,8 @@
 
     <resultMap type="TaskQuery" id="taskMap">
         <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="planCycle" property="planCycle"/>
         <result column="principal" property="principal"/>
         <result column="percentage" property="percentage"/>
         <result column="create_time" property="createTime"/>
@@ -12,6 +14,7 @@
 
     <sql id="base_column_list">
        t.id,
+       t.name,
        description,
        percentage,
        principal,
@@ -21,6 +24,7 @@
        time_sheet timeSheet,
        plan_start_time planStartTime,
        plan_end_time planEndTime,
+       CONCAT_WS('/',LEFT(t.plan_start_time,10),LEFT(t.plan_end_time,10)) planCycle,
        c.complete_rate,
        c.operator,
        c.notes,
@@ -74,18 +78,42 @@
         FROM sm_task WHERE id=#{id}
     </select>
 
+    <select id="queryTaskInfo" resultType="TaskInfo" parameterType="SearchDict">
+        SELECT
+            t.id,
+            t.name,
+            complete_rate percentage,
+            CONCAT_WS('/',LEFT ( t.plan_start_time, 10 ),LEFT ( t.plan_end_time, 10 )) planCycle,
+            operator principal
+        FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
+        <where>
+            <if test="projectId!=null and projectId!=''">
+                AND t.project_id=#{projectId}
+            </if>
+            <if test="taskId!=null and taskId!=''">
+                AND c.task_id=#{taskId}
+            </if>
+        </where>
+    </select>
+
     <select id="queryTask" resultMap="taskMap" parameterType="SearchDict">
         SELECT
         <include refid="base_column_list"/>
         FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
-        WHERE 1=1
-        <if test="principal!=null and principal!=''">
-            AND t.principal LIKE CONCAT('%',#{principal},'%')
-        </if>
-        <if test="updateTime!=null and updateTime!=''">
-            AND t.update_time BETWEEN #{updateTime} AND NOW()
-        </if>
-        GROUP BY t.id
+        <where>
+            <if test="projectId!=null and projectId!=''">
+                AND t.project_id=#{projectId}
+            </if>
+            <if test="taskId!=null and taskId!=''">
+                AND c.task_id=#{taskId}
+            </if>
+            <if test="principal!=null and principal!=''">
+                AND t.principal LIKE CONCAT('%',#{principal},'%')
+            </if>
+            <if test="updateTime!=null and updateTime!=''">
+                AND t.update_time BETWEEN #{updateTime} AND NOW()
+            </if>
+        </where>
     </select>
     <select id="queryTaskLog" resultType="TaskLogVo" parameterType="SearchDict">
         SELECT
