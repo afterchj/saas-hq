@@ -11,10 +11,12 @@ import lombok.Data;
 
 @Data
 public class SearchDict {
+    private int id;
     private int projectId;
     private int parentId;
     private int stageId;
     private int taskId;
+    private int flag;
     private String name;
     private String projectCode;
     private String principal;

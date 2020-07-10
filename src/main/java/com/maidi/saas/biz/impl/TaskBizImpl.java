@@ -35,7 +35,7 @@ public class TaskBizImpl implements TaskBiz {
                 for (TreeVo vo : tasks) {
                     Set<TreeVo> subTasks = TaskDao.listTree(0, vo.getId(), vo.getLevel() + 1);
                     if (subTasks.size() > 0) {
-                        vo.setSubTask(subTasks);
+                        vo.setTask(subTasks);
                         buildTree(subTasks);
                     }
                 }
@@ -49,7 +49,7 @@ public class TaskBizImpl implements TaskBiz {
         for (TreeVo vo : subTasks) {
             Set<TreeVo> tasks = TaskDao.listTree(0, vo.getId(), vo.getLevel() + 1);
             if (tasks.size() > 0) {
-                vo.setSubTask(tasks);
+                vo.setTask(tasks);
             }
         }
     }

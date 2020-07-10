@@ -4,6 +4,7 @@ import com.maidi.saas.dao.TaskDao;
 import com.maidi.saas.entity.vo.*;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.service.TaskService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,6 @@ import java.util.Set;
  * @Date 2020/6/12 13:28
  * @Created by hjchen
  */
-
 @Service
 public class TaskServiceImpl implements TaskService {
 
@@ -89,8 +89,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Set<TreeVo> listTree(int projectId, int parentId,int level) {
-        return taskDao.listTree(projectId, parentId,level);
+    public Set<TreeVo> listTree(int projectId, int parentId, int level) {
+        return taskDao.listTree(projectId, parentId, level);
     }
 
     @Override
@@ -100,6 +100,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskInfo> getTaskInfo(SearchDict dict) {
+        if (dict.getFlag() == 2) {
+            dict.setTaskId(dict.getId());
+        } else {
+            dict.setProjectId(dict.getId());
+        }
         return taskDao.queryTaskInfo(dict);
     }
 }

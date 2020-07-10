@@ -105,6 +105,7 @@ public class TaskController extends BaseController {
     @ApiOperation(value = "获取任务详情", notes = "根据项目id或任务id查看任务详情")
     @RequestMapping(value = "/queryTaskInfo", method = RequestMethod.GET)
     public Map getTaskInfo(SearchDict dict) {
+        log.warn("queryTaskInfo {}", dict);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
