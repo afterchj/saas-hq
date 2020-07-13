@@ -21,9 +21,9 @@ public interface TaskDao {
 
     List<TreeVo> getProjects();
 
-    TreeVo getTreeById(@Param("id") int id);
+    TreeVo getTreeById(@Param("taskId") Integer taskId,@Param("projectId") Integer projectId);
 
-    List<TreeVo> listTree(@Param("projectId") int projectId, @Param("parentId") int parentId, @Param("level") int level);
+    List<TreeVo> listTree(@Param("projectId") Integer projectId, @Param("parentId") Integer parentId, @Param("level") int level);
 
     int getType(int templateId);
 

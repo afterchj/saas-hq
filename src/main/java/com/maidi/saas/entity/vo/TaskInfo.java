@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class TaskInfo extends BaseVo {
-    private String name="";
+    private String name;
     private String principal="";
     private String percentage="";
     private String planCycle="";

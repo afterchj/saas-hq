@@ -26,25 +26,32 @@ public class TaskBizImpl implements TaskBiz {
 
     @Override
     public Map treeMap(SearchDict dict) {
+        if (dict.getFlag() == 0) {
+            dict.setProjectId(dict.getId());
+        } else {
+            dict.setTaskId(dict.getId());
+        }
         Map result = new HashMap();
         if (dict.getId() != 0) {
-            TreeVo treeVo = taskDao.getTreeById(dict.getId());
-            log.warn("treeVo {}", treeVo);
-            if (dict.getFlag() == 2) {
-                dict.setTaskId(dict.getId());
-                List<TreeVo> subTasks = taskDao.listTree(0, treeVo.getParentId(), treeVo.getLevel());
-                buildTree(subTasks, dict.getFlag());
-                List<TaskInfo> taskInfo = taskDao.queryTaskInfo(dict);
-                log.warn("subTaskParam {}", dict);
-//                treeVo.setTaskInfo(taskInfo);
-                result.put("task", subTasks);
-                result.put("taskInfo", taskInfo);
-            } else {
+            if (dict.getFlag() == 0) {
                 dict.setProjectId(dict.getId());
-                List<TreeVo> subTasks = taskDao.listTree(dict.getId(), 0, 0);
+                List<TreeVo> subTasks = taskDao.listTree(dict.getProjectId(), null, 0);
                 buildTree(subTasks, dict.getFlag());
                 List<TaskInfo> taskInfo = taskDao.queryTaskInfo(dict);
                 log.warn("taskParam {}", dict);
+                result.put("task", subTasks);
+                result.put("taskInfo", taskInfo);
+            } else {
+                TreeVo treeVo = taskDao.getTreeById(dict.getTaskId(), null);
+                log.warn("treeVo {}", treeVo);
+                dict.setTaskId(dict.getId());
+                List<TreeVo> subTasks = taskDao.listTree(0, treeVo.getParentId(), treeVo.getLevel());
+                if (subTasks.size() == 0) {
+                    subTasks.add(treeVo);
+                }
+                buildTree(subTasks, dict.getFlag());
+                List<TaskInfo> taskInfo = taskDao.queryTaskInfo(dict);
+                log.warn("subTaskParam {}", dict);
                 result.put("task", subTasks);
                 result.put("taskInfo", taskInfo);
             }
@@ -57,40 +64,27 @@ public class TaskBizImpl implements TaskBiz {
         return result;
     }
 
-    public boolean isParent(List<TreeVo> subTasks, TreeVo treeVo, int type) {
-//        boolean flag = false;
-//        if (subTasks != null) {
-//            if (subTasks.size() > 0) {
-//                for (TreeVo vo : subTasks) {
-//                    List<TreeVo> subTask = matchTask(vo, type);
-//                    if (subTask.size() > 0) flag = true;
-//                }
-//            }
-//        } else {
-//            List<TreeVo> subTask = matchTask(treeVo, type);
-//            if (subTask.size() > 0) flag = true;
-//        }
-        return true;
+    public boolean isParent(TreeVo treeVo, int type) {
+        boolean flag = false;
+        List<TreeVo> subTask = matchTask(treeVo, type);
+        if (subTask.size() > 0) flag = true;
+        return flag;
     }
 
     private List<TreeVo> matchTask(TreeVo treeVo, int type) {
         log.warn("matchTask {}", treeVo);
         List<TreeVo> subTask;
-        if (type == 2) {
-            subTask = taskDao.listTree(0, treeVo.getParentId(), treeVo.getLevel() + 1);
+        if (type == 0) {
+            subTask = taskDao.listTree(treeVo.getProjectId(), null, 0);
         } else {
-            subTask = taskDao.listTree(treeVo.getProjectId(), 0, 0);
+            subTask = taskDao.listTree(0, treeVo.getParentId(), treeVo.getLevel());
         }
         return subTask;
     }
 
     public void buildTree(List<TreeVo> subTasks, int type) {
         for (TreeVo vo : subTasks) {
-            if (type == 2) {
-                vo.setParent(isParent(subTasks, null, type));
-            } else {
-                vo.setParent(isParent(null, vo, type));
-            }
+            vo.setParent(isParent(vo, type));
         }
     }
 }
