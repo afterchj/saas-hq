@@ -52,7 +52,7 @@
             <if test="projectId!=null and projectId!=''">
                 and project_id=#{projectId}
             </if>
-            <if test="parentId!=null and parentId!=''">
+            <if test="parentId!=null">
                 and parent_id=#{parentId} and level =#{level}
             </if>
         </where>
@@ -90,11 +90,9 @@
 
     <select id="queryTaskInfo" resultType="TaskInfo" parameterType="SearchDict">
         SELECT
-        t.id,
-        t.name,
-        complete_rate percentage,
-        CONCAT_WS('/',LEFT ( t.plan_start_time, 10 ),LEFT ( t.plan_end_time, 10 )) planCycle,
-        t.principal
+            complete_rate percentage,
+            CONCAT_WS('/',LEFT ( t.plan_start_time, 10 ),LEFT ( t.plan_end_time, 10 )) planCycle,
+            t.principal
         FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
         <where>
             <if test="projectId!=null and projectId!=''">

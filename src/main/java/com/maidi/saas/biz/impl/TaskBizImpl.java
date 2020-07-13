@@ -3,13 +3,11 @@ package com.maidi.saas.biz.impl;
 import com.maidi.saas.biz.TaskBiz;
 import com.maidi.saas.dao.TaskDao;
 import com.maidi.saas.entity.dd.SearchDict;
-import com.maidi.saas.entity.vo.OptionDict;
 import com.maidi.saas.entity.vo.TaskInfo;
 import com.maidi.saas.entity.vo.TreeVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.tree.Tree;
 
 import java.util.*;
 
@@ -31,6 +29,7 @@ public class TaskBizImpl implements TaskBiz {
         Map result = new HashMap();
         if (dict.getId() != 0) {
             TreeVo treeVo = taskDao.getTreeById(dict.getId());
+            log.warn("treeVo {}", treeVo);
             if (dict.getFlag() == 2) {
                 dict.setTaskId(dict.getId());
                 List<TreeVo> subTasks = taskDao.listTree(0, treeVo.getParentId(), treeVo.getLevel());
@@ -59,19 +58,19 @@ public class TaskBizImpl implements TaskBiz {
     }
 
     public boolean isParent(List<TreeVo> subTasks, TreeVo treeVo, int type) {
-        boolean flag = false;
-        if (subTasks != null) {
-            if (subTasks.size() > 0) {
-                for (TreeVo vo : subTasks) {
-                    List<TreeVo> subTask = matchTask(vo, type);
-                    if (subTask.size() > 0) flag = true;
-                }
-            }
-        } else {
-            List<TreeVo> subTask = matchTask(treeVo, type);
-            if (subTask.size() > 0) flag = true;
-        }
-        return flag;
+//        boolean flag = false;
+//        if (subTasks != null) {
+//            if (subTasks.size() > 0) {
+//                for (TreeVo vo : subTasks) {
+//                    List<TreeVo> subTask = matchTask(vo, type);
+//                    if (subTask.size() > 0) flag = true;
+//                }
+//            }
+//        } else {
+//            List<TreeVo> subTask = matchTask(treeVo, type);
+//            if (subTask.size() > 0) flag = true;
+//        }
+        return true;
     }
 
     private List<TreeVo> matchTask(TreeVo treeVo, int type) {
