@@ -38,8 +38,8 @@ public class TaskController extends BaseController {
 
 
     @GetMapping("/tree")
-    public Map treeMap() {
-        Map result = taskBiz.treeMap();
+    public Map treeMap(SearchDict dict) {
+        Map result = taskBiz.treeMap(dict);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
         return result;

@@ -89,12 +89,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Set<TreeVo> listTree(int projectId, int parentId, int level) {
+    public List<TreeVo> listTree(int projectId, int parentId, int level) {
         return taskDao.listTree(projectId, parentId, level);
     }
 
     @Override
-    public List<OptionDict> getProjects() {
+    public List<TreeVo> getProjects() {
         return taskDao.getProjects();
     }
 

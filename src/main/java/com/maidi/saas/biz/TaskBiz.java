@@ -1,5 +1,7 @@
 package com.maidi.saas.biz;
 
+import com.maidi.saas.entity.dd.SearchDict;
+
 import java.util.Map;
 
 /**
@@ -12,5 +14,5 @@ import java.util.Map;
 
 public interface TaskBiz {
 
-    Map treeMap();
+    Map treeMap(SearchDict dict);
 }

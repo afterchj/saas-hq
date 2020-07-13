@@ -17,6 +17,7 @@ public class SearchDict {
     private int stageId;
     private int taskId;
     private int flag;
+    private int level = 1;
     private String name;
     private String projectCode;
     private String principal;

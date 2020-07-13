@@ -15,9 +15,10 @@ import java.util.Set;
 public class TreeVo {
 
     private Integer id;
+    private String name;
     private Integer level = 1;
     private Integer projectId;
     private Integer parentId;
-    private String name;
-    private Set<TreeVo> task;
+    private boolean isParent;
+    private List<TaskInfo> taskInfo;
 }

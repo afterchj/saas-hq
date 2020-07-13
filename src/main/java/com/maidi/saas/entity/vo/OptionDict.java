@@ -16,5 +16,4 @@ import java.util.Set;
 public class OptionDict {
     private Integer id;
     private String name;
-    private Set<TreeVo> task;
 }

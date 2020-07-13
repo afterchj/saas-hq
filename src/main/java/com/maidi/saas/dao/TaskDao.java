@@ -19,9 +19,11 @@ public interface TaskDao {
 
     List<TimeSheetVo> getTimeSheet();
 
-    List<OptionDict> getProjects();
+    List<TreeVo> getProjects();
 
-    Set<TreeVo> listTree(@Param("projectId") int projectId, @Param("parentId") int parentId, @Param("level") int level);
+    TreeVo getTreeById(@Param("id") int id);
+
+    List<TreeVo> listTree(@Param("projectId") int projectId, @Param("parentId") int parentId, @Param("level") int level);
 
     int getType(int templateId);
 

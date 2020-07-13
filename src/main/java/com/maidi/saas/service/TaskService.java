@@ -40,9 +40,9 @@ public interface TaskService {
 
     void deleteTaskById(int id);
 
-    Set<TreeVo> listTree(int projectId, int parentId,int level);
+    List<TreeVo> listTree(int projectId, int parentId,int level);
 
-    List<OptionDict> getProjects();
+    List<TreeVo> getProjects();
 
     List<TaskInfo> getTaskInfo(SearchDict dict);
 }

@@ -3,6 +3,7 @@ package com.maidi.saas;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.maidi.saas.biz.TaskBiz;
+import com.maidi.saas.dao.TaskDao;
 import com.maidi.saas.dao.TaskMapper;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.*;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -42,11 +44,15 @@ public class SaasSmartHqApplicationTests {
     @Autowired
     private TaskBiz taskBiz;
     @Autowired
+    private TaskDao taskDao;
+    @Autowired
     private CommonService commonService;
 
     @Test
     public void testTree() {
-        Map result = taskBiz.treeMap();
+        SearchDict searchDict = new SearchDict();
+//        Map result = taskBiz.treeMap(searchDict);
+        List<TreeVo> result = taskDao.listTree(3, 0, 1);
         System.out.println(JSON.toJSONString(result));
     }
 
