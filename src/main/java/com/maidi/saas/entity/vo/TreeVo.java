@@ -14,11 +14,11 @@ import java.util.Set;
 @Data
 public class TreeVo {
 
-    private Integer id;
+    private int id;
     private String name;
-    private Integer level = 1;
-    private Integer projectId;
-    private Integer parentId;
+    private int level = 1;
+    private int projectId;
+    private int parentId;
     private boolean isParent;
     private List<TaskInfo> taskInfo;
 }

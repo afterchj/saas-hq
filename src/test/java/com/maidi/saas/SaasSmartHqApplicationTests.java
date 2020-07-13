@@ -52,7 +52,7 @@ public class SaasSmartHqApplicationTests {
     public void testTree() {
         SearchDict searchDict = new SearchDict();
 //        Map result = taskBiz.treeMap(searchDict);
-        List<TreeVo> result = taskDao.listTree(3, 0, 1);
+        List<TreeVo> result = taskDao.listTree(7, 0, 0);
         System.out.println(JSON.toJSONString(result));
     }
 
