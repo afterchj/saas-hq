@@ -45,7 +45,7 @@ public class TaskBizImpl implements TaskBiz {
                 TreeVo treeVo = taskDao.getTreeById(dict.getTaskId(), null);
                 log.warn("treeVo {}", treeVo);
                 dict.setTaskId(dict.getId());
-                List<TreeVo> subTasks = taskDao.listTree(0, treeVo.getParentId(), treeVo.getLevel());
+                List<TreeVo> subTasks = taskDao.listTree(0, treeVo.getId(), treeVo.getLevel() + 1);
                 if (subTasks.size() == 0) {
                     subTasks.add(treeVo);
                 }
@@ -77,7 +77,7 @@ public class TaskBizImpl implements TaskBiz {
         if (type == 0) {
             subTask = taskDao.listTree(treeVo.getProjectId(), null, 0);
         } else {
-            subTask = taskDao.listTree(0, treeVo.getParentId(), treeVo.getLevel());
+            subTask = taskDao.listTree(0, treeVo.getId(), treeVo.getLevel() + 1);
         }
         return subTask;
     }
