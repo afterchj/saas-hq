@@ -6,6 +6,7 @@ import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.TaskInfo;
 import com.maidi.saas.entity.vo.TreeVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,16 +27,25 @@ public class TaskBizImpl implements TaskBiz {
 
     @Override
     public Map treeMap(SearchDict dict) {
+        String str = dict.getId();
+        int id = 0;
+        if (StringUtils.isNotBlank(str)) {
+            if (str.contains("_")) {
+                id = Integer.parseInt(str.substring(str.indexOf("_") + 1, str.length()));
+            } else {
+                id = Integer.parseInt(str);
+            }
+        }
         if (dict.getFlag() == 0) {
-            dict.setProjectId(dict.getId());
+            dict.setProjectId(id);
         } else {
-            dict.setTaskId(dict.getId());
+            dict.setTaskId(id);
         }
         Map result = new HashMap();
-        if (dict.getId() != 0) {
+        if (id != 0) {
             if (dict.getFlag() == 0) {
-                dict.setProjectId(dict.getId());
-                List<TreeVo> subTasks = taskDao.listTree(dict.getProjectId(), null, 0);
+//                dict.setProjectId(id);
+                List<TreeVo> subTasks = taskDao.listTree(id, null, 0);
                 buildTree(subTasks, dict.getFlag());
                 List<TaskInfo> taskInfo = taskDao.queryTaskInfo(dict);
                 log.warn("taskParam {}", dict);
@@ -44,8 +54,8 @@ public class TaskBizImpl implements TaskBiz {
             } else {
                 TreeVo treeVo = taskDao.getTreeById(dict.getTaskId(), null);
                 log.warn("treeVo {}", treeVo);
-                dict.setTaskId(dict.getId());
-                List<TreeVo> subTasks = taskDao.listTree(0, treeVo.getId(), treeVo.getLevel() + 1);
+                dict.setTaskId(id);
+                List<TreeVo> subTasks = taskDao.listTree(0, Integer.valueOf(treeVo.getId()), treeVo.getLevel() + 1);
                 if (subTasks.size() == 0) {
                     subTasks.add(treeVo);
                 }
@@ -77,7 +87,7 @@ public class TaskBizImpl implements TaskBiz {
         if (type == 0) {
             subTask = taskDao.listTree(treeVo.getProjectId(), null, 0);
         } else {
-            subTask = taskDao.listTree(0, treeVo.getId(), treeVo.getLevel() + 1);
+            subTask = taskDao.listTree(0, Integer.valueOf(treeVo.getId()), treeVo.getLevel() + 1);
         }
         return subTask;
     }

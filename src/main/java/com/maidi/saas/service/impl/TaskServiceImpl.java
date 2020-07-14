@@ -100,10 +100,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskInfo> getTaskInfo(SearchDict dict) {
+        int id = Integer.parseInt(dict.getId());
         if (dict.getFlag() == 2) {
-            dict.setTaskId(dict.getId());
+            dict.setTaskId(id);
         } else {
-            dict.setProjectId(dict.getId());
+            dict.setProjectId(id);
         }
         return taskDao.queryTaskInfo(dict);
     }

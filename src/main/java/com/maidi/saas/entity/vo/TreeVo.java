@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 public class TreeVo {
 
-    private int id;
+    private String id;
     private String name;
     private int level = 1;
     private int projectId;
