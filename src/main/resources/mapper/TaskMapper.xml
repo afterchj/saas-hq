@@ -78,6 +78,7 @@
     <select id="getTaskById" resultType="TaskVo" parameterType="int">
         SELECT
            id,
+           flag,
            stage,
            description,
            percentage,
@@ -173,6 +174,24 @@
         )
     </insert>
 
+    <update id="updateTaskById" parameterType="TaskVo" keyProperty="id" useGeneratedKeys="true">
+        UPDATE sm_task
+        <set>
+            update_time=now(),
+            <if test="taskName != null">name=#{taskName},</if>
+            <if test="principal != null">principal=#{principal},</if>
+            <if test="priority != null">priority=#{priority},</if>
+            <if test="stage != null">stage=#{stage},</if>
+            <if test="timeSheet != null">time_sheet=#{timeSheet},</if>
+            <if test="workload != null">workload=#{workload},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="percentage != null">percentage=#{percentage},</if>
+            <if test="planStartTime != null">plan_start_time=#{planStartTime},</if>
+            <if test="planEndTime != null">plan_end_time=#{planEndTime},</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
     <insert id="saveTaskComment" parameterType="TaskCommentVo">
         INSERT INTO sm_task_comment (task_id,operator,notes,complete_rate) VALUES (#{taskId},#{operator},#{notes},#{completeRate});
         UPDATE sm_task SET percentage=#{completeRate},update_time=now() WHERE id=#{taskId} ;
@@ -198,22 +217,10 @@
             </if>
         </where>
     </select>
+
     <delete id="deleteTaskById" parameterType="int">
         DELETE FROM sm_task WHERE id=#{id}
     </delete>
-
-    <update id="updateTaskById" parameterType="TaskVo">
-        UPDATE sm_task
-        <trim prefix="set" suffixOverrides=",">
-            <if test="taskName != null">name=#{taskName},</if>
-            <if test="moduleId != null">module_id=#{moduleId},</if>
-            <if test="operatorId != null">operator_id=#{operatorId},</if>
-            <if test="ecode != null">ecode=#{ecode},</if>
-            <if test="notes != null">notes=#{notes},</if>
-            update_time=now()
-        </trim>
-        WHERE id=#{id}
-    </update>
 
     <update id="updateStatus">
         UPDATE sm_ecode SET operator_id=#{operatorId},status=#{status}, update_time=now() WHERE id IN

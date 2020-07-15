@@ -128,12 +128,28 @@ public class TaskController extends BaseController {
 
     @ApiOperation(value = "查看任务", notes = "根据ID查看任务详情")
     @RequestMapping(value = "/getTaskById", method = RequestMethod.GET)
-    public Map getTaskById(Integer id) {
+    public Map getTaskById(int id, Integer flag) {
+        log.warn("id {} flag {}",id,flag);
         Map result = new HashMap();
+        if (flag != null && flag != 0) {
+            TaskVo taskVo = taskService.getById(id);
+            result.put("code", ResultDict.SUCCESS.getCode());
+            result.put("msg", ResultDict.SUCCESS.getValue());
+            result.put("data", taskVo);
+        } else {
+            result.put("code", ResultDict.ID_NOT_CORRECT.getCode());
+            result.put("msg", ResultDict.ID_NOT_CORRECT.getValue());
+        }
+        return result;
+    }
+
+    @ApiOperation(value = "更新任务", notes = "根据id修改任务")
+    @RequestMapping(value = "/updateTaskById", method = RequestMethod.POST)
+    public Map updateById(@RequestBody(required = false) TaskVo taskVo) {
+        Map result = new HashMap();
+        taskService.updateById(taskVo);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-        TaskVo taskVo = taskService.getById(id);
-        result.put("data", taskVo);
         return result;
     }
 

@@ -11,6 +11,7 @@ public enum ResultDict {
 
     SUCCESS("000", "成功"), SYSTEM_ERROR("200", "系统错误"),
     ACCOUNT_NOT_CORRECT("101", "登录名错误"), PASSWORD_NOT_CORRECT("102", "登录名密码不正确"),
+    ID_NOT_CORRECT("201", "请求的id不是任务id"), NOT_FOUND("202", "没有查询到数据"),
     PARAMS_BLANK("204", "参数不能够为空"), PARAMS_NOT_PARSED("205", "参数解析错误");
 
     ResultDict(String code, String value) {

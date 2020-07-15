@@ -108,4 +108,9 @@ public class TaskServiceImpl implements TaskService {
         }
         return taskDao.queryTaskInfo(dict);
     }
+
+    @Override
+    public void updateById(TaskVo taskVo) {
+        taskDao.updateTaskById(taskVo);
+    }
 }

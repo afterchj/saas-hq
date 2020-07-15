@@ -54,4 +54,5 @@ public interface TaskDao {
     void saveTemplate(TemplateVo templateVo);
 
     List<TaskLogVo> queryTaskLog(SearchDict dict);
+
 }

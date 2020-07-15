@@ -45,4 +45,6 @@ public interface TaskService {
     List<TreeVo> getProjects();
 
     List<TaskInfo> getTaskInfo(SearchDict dict);
+
+    void updateById(TaskVo taskVo);
 }

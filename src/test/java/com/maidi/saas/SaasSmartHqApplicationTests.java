@@ -78,9 +78,9 @@ public class SaasSmartHqApplicationTests {
     @Test
     public void testProject() {
         List<TaskQuery> taskVos = taskService.queryTask(null);
-        List<TaskQuery> taskVoList = taskMapper.getAll();
+//        List<TaskQuery> taskVoList = taskMapper.getAll();
         TaskVo taskVo = taskService.getById(1);
-        System.out.println(JSON.toJSONString(taskVos));
+//        System.out.println(JSON.toJSONString(taskVos));
 //        System.out.println(JSON.toJSONString(taskVoList));
         System.out.println(JSON.toJSONString(taskVo));
 //        ProjectVo projectVo = projectService.getProjectById(1);
