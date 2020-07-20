@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * @Classname Task
+ * @Classname Ecode
  * @Description TODO
  * @Date 2020/6/3 10:28
  * @Created by hjchen

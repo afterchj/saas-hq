@@ -46,9 +46,15 @@ public class ProjectController extends BaseController {
         List<Item> users = commonService.getOptions("sm_user", "");
         List<Item> stage = commonService.getOptions("sm_dict", "1");
         List<Item> type = commonService.getOptions("sm_dict", "2");
+        List<Item> customer = commonService.getOptions("sm_customer", "");
+        List<Item> customerGrade = commonService.getOptions("sm_customer_grade", "");
+        List<Item> customerType = commonService.getOptions("sm_customer_type", "");
         data.put("user", users);
         data.put("stage", stage);
         data.put("type", type);
+        data.put("customer", customer);
+        data.put("customerGrade", customerGrade);
+        data.put("customerType", customerType);
         result.put("data", data);
         return result;
     }
@@ -93,7 +99,7 @@ public class ProjectController extends BaseController {
     @ApiOperation(value = "创建项目", notes = "新增项目")
     @RequestMapping(value = "/addProject", method = RequestMethod.POST)
     public Map queryProjects(@RequestBody(required = false) String param) {
-        ProjectVo projectVo = JSONObject.parseObject(param,ProjectVo.class);
+        ProjectVo projectVo = JSONObject.parseObject(param, ProjectVo.class);
 //        log.warn("projectVo {}", param);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
