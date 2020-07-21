@@ -31,7 +31,7 @@ public class TaskBizImpl implements TaskBiz {
         int id = 0;
         if (StringUtils.isNotBlank(str)) {
             if (str.contains("_")) {
-                id = Integer.parseInt(str.substring(str.indexOf("_") + 1, str.length()));
+                id = Integer.parseInt(str.substring(str.lastIndexOf("_") + 1, str.length()));
             } else {
                 id = Integer.parseInt(str);
             }

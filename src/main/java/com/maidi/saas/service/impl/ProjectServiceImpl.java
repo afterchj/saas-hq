@@ -6,6 +6,7 @@ import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.ProjectQuery;
 import com.maidi.saas.entity.vo.ProjectVo;
 import com.maidi.saas.service.ProjectService;
+import com.maidi.saas.utils.PingYinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public int save(ProjectVo projectVo) {
+        projectVo.setProjectCode(String.format("project_%s", PingYinUtil.getFirstSpell(projectVo.getProjectName())));
         projectDao.saveProject(projectVo);
         return projectVo.getId();
     }

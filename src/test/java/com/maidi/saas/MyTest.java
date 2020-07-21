@@ -1,5 +1,6 @@
 package com.maidi.saas;
 
+import com.maidi.saas.utils.PingYinUtil;
 import org.junit.Test;
 
 /**
@@ -13,7 +14,9 @@ public class MyTest {
     @Test
     public void testStr() {
         String str = "p_1";
-        String sufrix = str.substring(str.indexOf("_")+1, str.length());
-        System.out.println(sufrix);
+        String suffix = str.substring(str.indexOf("_")+1, str.length());
+        System.out.println(suffix);
+        System.out.println(PingYinUtil.getFirstSpell("测试项目爱"));
+        System.out.println(PingYinUtil.getFullSpell("测试项目爱"));
     }
 }
