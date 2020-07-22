@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 public class SearchDict {
-    private String id;
+    private String id = "0";
     private int projectId;
     private int parentId;
     private int stageId;

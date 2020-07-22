@@ -120,7 +120,7 @@
                 AND c.task_id=#{taskId}
             </if>
             <if test="principal!=null and principal!=''">
-                AND t.principal LIKE CONCAT('%',#{principal},'%')
+                AND c.operator LIKE CONCAT('%',#{principal},'%')
             </if>
             <if test="updateTime!=null and updateTime!=''">
                 AND t.update_time BETWEEN #{updateTime} AND NOW()

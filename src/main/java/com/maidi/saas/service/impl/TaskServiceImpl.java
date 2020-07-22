@@ -40,6 +40,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskQuery> queryTask(SearchDict dict) {
+        int id = Integer.parseInt(dict.getId());
+        if (dict.getFlag() == 2) {
+            dict.setTaskId(id);
+        } else {
+            dict.setProjectId(id);
+        }
         return taskDao.queryTask(dict);
     }
 
