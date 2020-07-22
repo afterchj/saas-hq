@@ -1,5 +1,6 @@
 package com.maidi.saas.dao;
 
+import com.maidi.saas.entity.vo.CustomerVo;
 import com.maidi.saas.entity.vo.OptionDict;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.ProjectQuery;
@@ -26,6 +27,8 @@ public interface ProjectDao {
     List<OptionDict> getAllProjects();
 
     List<ProjectQuery> queryProject(SearchDict map);
+
+    CustomerVo getCustomerInfoById(int id);
 
     void deleteProjectById(int id);
 }

@@ -17,6 +17,6 @@ public class CustomerVo {
     private Integer id;
     private String name;
     private String info;
-    private List<OptionDict> customerGrade;
-    private List<OptionDict> customerType;
+    private String customerGrade;
+    private String customerType;
 }

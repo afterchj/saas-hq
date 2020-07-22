@@ -1,5 +1,6 @@
 package com.maidi.saas.service;
 
+import com.maidi.saas.entity.vo.CustomerVo;
 import com.maidi.saas.entity.vo.OptionDict;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.ProjectQuery;
@@ -23,6 +24,7 @@ public interface ProjectService {
 
     void updateStage(ProjectVo projectVo);
 
+    CustomerVo getCustomerInfoById(int id);
 
     ProjectVo getProjectById(int id);
 

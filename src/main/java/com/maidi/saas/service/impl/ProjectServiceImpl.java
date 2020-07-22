@@ -1,6 +1,7 @@
 package com.maidi.saas.service.impl;
 
 import com.maidi.saas.dao.ProjectDao;
+import com.maidi.saas.entity.vo.CustomerVo;
 import com.maidi.saas.entity.vo.OptionDict;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.ProjectQuery;
@@ -45,6 +46,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void updateStage(ProjectVo projectVo) {
         projectDao.updateStageById(projectVo);
+    }
+
+    @Override
+    public CustomerVo getCustomerInfoById(int id) {
+        return projectDao.getCustomerInfoById(id);
     }
 
     @Override

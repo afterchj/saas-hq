@@ -37,6 +37,20 @@
         WHERE p.id=#{id}
     </select>
 
+    <select id="getCustomerInfoById" resultType="CustomerVo" parameterType="int">
+        SELECT
+            c.id,
+            c.gid,
+            c.tid,
+            c.name,
+            g.`name` customerGrade,
+            t.`name` customerType
+        FROM sm_customer c
+        INNER JOIN sm_customer_grade g ON c.gid = g.id
+        INNER JOIN sm_customer_type t ON  c.tid = t.id
+        WHERE c.id=#{id}
+    </select>
+
     <select id="getAllProjects" resultType="OptionDict">
         SELECT id,name FROM sm_project
     </select>
@@ -50,7 +64,8 @@
         LEFT JOIN sm_customer cs ON p.customer_id = cs.id
         INNER JOIN sm_dict d ON d.id = p.type_id
         INNER JOIN sm_dict s ON s.id = p.stage_id
-        LEFT JOIN (SELECT t.id,t.project_id,SUM(IFNULL(t.percentage,st.percentage)) projectProgress FROM sm_task t LEFT JOIN sm_task st ON t.parent_id=st.id GROUP BY t.project_id) rs ON rs.project_id=p.id
+        LEFT JOIN (SELECT t.id,t.project_id,SUM(IFNULL(t.percentage,st.percentage)) projectProgress FROM sm_task t LEFT
+        JOIN sm_task st ON t.parent_id=st.id GROUP BY t.project_id) rs ON rs.project_id=p.id
         <where>
             <if test="projectName!=null and projectName!=''">
                 AND p.name LIKE CONCAT('%',#{projectName},'%')

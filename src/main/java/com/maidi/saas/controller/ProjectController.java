@@ -70,6 +70,17 @@ public class ProjectController extends BaseController {
         return result;
     }
 
+    @ApiOperation(value = "获取客户详情", notes = "获取客户详情", produces = "application/json")
+    @RequestMapping(value = "/customerInfo", method = RequestMethod.GET)
+    public Map getCustomerInfo(int id) {
+        Map result = new HashMap(id);
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        CustomerVo customerVo = projectService.getCustomerInfoById(id);
+        result.put("data", customerVo);
+        return result;
+    }
+
     @ApiOperation(value = "项目查看", notes = "根据ID查询项目")
     @RequestMapping(value = "/getProjectById", method = RequestMethod.GET)
     public Map getProjectById(Integer id) {

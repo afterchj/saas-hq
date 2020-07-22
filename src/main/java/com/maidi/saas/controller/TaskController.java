@@ -53,9 +53,11 @@ public class TaskController extends BaseController {
         result.put("msg", ResultDict.SUCCESS.getValue());
         List<Item> stages = commonService.getOptions("sm_stage", "");
         List<Item> priority = commonService.getOptions("sm_priority", "");
+        List<Item> principal = commonService.getOptions("sm_user", "");
         List<TimeSheetVo> timeSheet = taskService.getTimeSheet();
         data.put("stage", stages);
         data.put("priority", priority);
+        data.put("principal", principal);
         data.put("timeSheet", timeSheet);
         result.put("data", data);
         return result;
@@ -129,7 +131,7 @@ public class TaskController extends BaseController {
     @ApiOperation(value = "查看任务", notes = "根据ID查看任务详情")
     @RequestMapping(value = "/getTaskById", method = RequestMethod.GET)
     public Map getTaskById(int id, Integer flag) {
-        log.warn("id {} flag {}",id,flag);
+        log.warn("id {} flag {}", id, flag);
         Map result = new HashMap();
         if (flag != null && flag != 0) {
             TaskVo taskVo = taskService.getById(id);
