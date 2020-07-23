@@ -9,6 +9,7 @@ import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.*;
 import com.maidi.saas.service.*;
 import com.maidi.saas.utils.IdGenerator;
+import com.maidi.saas.utils.OssPropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,12 +49,21 @@ public class SaasSmartHqApplicationTests {
     @Autowired
     private CommonService commonService;
 
+    @Autowired
+    private OssPropertiesUtils ossPropertiesUtils;
+
     @Test
     public void testTree() {
         SearchDict searchDict = new SearchDict();
 //        Map result = taskBiz.treeMap(searchDict);
         List<TreeVo> result = taskDao.listTree(7, 0, 0);
         System.out.println(JSON.toJSONString(result));
+    }
+
+    @Test
+    public void testProperty() {
+        System.out.println(ossPropertiesUtils.getBucketName());
+        System.out.println(OssPropertiesUtils.FILEHOST);
     }
 
     @Test

@@ -28,6 +28,7 @@ public class TaskVo extends BaseVo {
     private String priority;
     private String description;
     private String percentage;
+    private String planCycle;
     private Date planStartTime;
     private Date planEndTime;
 

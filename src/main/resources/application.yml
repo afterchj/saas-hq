@@ -1,9 +1,16 @@
-
+downPath: http://qiyuan-2020.oss-cn-hangzhou.aliyuncs.com/
 spring:
   application:
     name: project-manager
   profiles:
     active: demo
+  #文件上传
+  servlet:
+    multipart:
+      enabled: true
+      #location: roy-upload-tmp
+      max-file-size: 100MB
+      max-request-size: 100MB
 ########################################################
 ### Java Persistence Api --  Spring jpa ��������Ϣ
 # Specify the DBMS
@@ -46,3 +53,11 @@ pagehelper:
   # 用于控制默认不带 count 查询的方法中，是否执行 count 查询，这里设置为true后，total会为-1
   default-count: false
   #dialect-alias: ⑥
+#OSS
+oss:
+  file:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    keyId: LTAI4G1dSiMJ8FQsYN26zSZ7
+    keySecret: R6l66VPAXsY30cf7xU7vt1Ia0naN8Z
+    bucketName: qiyuan-2020
+    fileHost: ssm

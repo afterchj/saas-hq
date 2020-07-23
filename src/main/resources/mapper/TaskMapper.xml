@@ -87,6 +87,7 @@
            workload,
            name taskName,
            time_sheet timeSheet,
+           CONCAT_WS('/',LEFT(plan_start_time,10),LEFT(plan_end_time,10)) planCycle,
            plan_start_time planStartTime,
            plan_end_time planEndTime
         FROM sm_task WHERE id=#{id}
