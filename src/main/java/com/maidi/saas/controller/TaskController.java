@@ -116,6 +116,18 @@ public class TaskController extends BaseController {
         return result;
     }
 
+    @ApiOperation(value = "获取任务回复列表", notes = "根据任务id返回任务回复详情")
+    @RequestMapping(value = "/listCommentById", method = RequestMethod.GET)
+    public Map listComment(int id) {
+        log.warn("queryTaskInfo {}", id);
+        Map result = new HashMap();
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        List<TaskCommentVo> commentVos = taskService.getTaskListById(id);
+        result.put("data", commentVos);
+        return result;
+    }
+
     @ApiOperation(value = "日志维护记录容查询", notes = "任务日志管理功能")
     @RequestMapping(value = "/queryLog", method = RequestMethod.GET)
     public Map queryLog(SearchDict dict) {

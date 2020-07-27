@@ -96,7 +96,7 @@
     <select id="queryTaskInfo" resultType="TaskInfo" parameterType="SearchDict">
         SELECT
             complete_rate percentage,
-            CONCAT_WS('/',LEFT ( t.plan_start_time, 10 ),LEFT ( t.plan_end_time, 10 )) planCycle,
+            CONCAT_WS('/',SUBSTRING( t.plan_start_time, 6,5 ),SUBSTRING( t.plan_end_time, 6,5 )) planCycle,
             t.principal
         FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
         <where>
