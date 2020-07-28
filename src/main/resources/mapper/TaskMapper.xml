@@ -8,6 +8,7 @@
         <result column="planCycle" property="planCycle"/>
         <result column="principal" property="principal"/>
         <result column="percentage" property="percentage"/>
+        <result column="description" property="description"/>
         <result column="create_time" property="createTime"/>
         <collection property="content" select="getTaskListById" column="id" fetchType="lazy"/>
     </resultMap>
@@ -72,7 +73,7 @@
     </select>
 
     <select id="getTaskListById" resultType="TaskCommentVo" parameterType="int">
-        SELECT complete_rate completeRate,operator,notes,create_time createTime FROM sm_task_comment where task_id=#{id}
+        SELECT id,complete_rate completeRate,operator,notes,create_time createTime FROM sm_task_comment where task_id=#{id}
     </select>
 
     <select id="getTaskById" resultType="TaskVo" parameterType="int">
@@ -95,9 +96,9 @@
 
     <select id="queryTaskInfo" resultType="TaskInfo" parameterType="SearchDict">
         SELECT
-            complete_rate percentage,
-            CONCAT_WS('/',SUBSTRING( t.plan_start_time, 6,5 ),SUBSTRING( t.plan_end_time, 6,5 )) planCycle,
-            t.principal
+        complete_rate percentage,
+        CONCAT_WS('/',SUBSTRING( t.plan_start_time, 6,5 ),SUBSTRING( t.plan_end_time, 6,5 )) planCycle,
+        t.principal
         FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
         <where>
             <if test="projectId!=null and projectId!=''">
@@ -127,6 +128,7 @@
                 AND t.update_time BETWEEN #{updateTime} AND NOW()
             </if>
         </where>
+        GROUP BY t.id
     </select>
     <select id="queryTaskLog" resultType="TaskLogVo" parameterType="SearchDict">
         SELECT
@@ -153,7 +155,6 @@
     <insert id="saveTask" parameterType="TaskVo" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO sm_task (
          	project_id,
-            is_parent,
             parent_id,
             name,
             level,
@@ -171,7 +172,7 @@
             update_time
           )
         VALUES (
-        #{projectId},#{isParent},#{parentId},#{taskName},#{level},#{flag},#{principal},#{stage},#{priority},#{timeSheet},#{workload},#{percentage},#{description},#{planStartTime},#{planEndTime},now(),now()
+        #{projectId},#{parentId},#{taskName},#{level},#{flag},#{principal},#{stage},#{priority},#{timeSheet},#{workload},#{percentage},#{description},#{planStartTime},#{planEndTime},now(),now()
         )
     </insert>
 
@@ -194,9 +195,12 @@
     </update>
 
     <insert id="saveTaskComment" parameterType="TaskCommentVo">
-        INSERT INTO sm_task_comment (task_id,operator,notes,complete_rate) VALUES (#{taskId},#{operator},#{notes},#{completeRate});
-        UPDATE sm_task SET percentage=#{completeRate},update_time=now() WHERE id=#{taskId} ;
+        INSERT INTO sm_task_comment (task_id,operator,notes,complete_rate) VALUES (#{taskId},#{operator},#{notes},#{completeRate})
     </insert>
+
+    <update id="updateTaskComment" parameterType="TaskCommentVo">
+        UPDATE sm_task SET percentage=#{completeRate},description=#{notes},update_time=now() WHERE id=#{taskId}
+    </update>
 
     <insert id="saveTaskLog" parameterType="TaskRemarkVo">
         INSERT INTO sm_task_log (task_id,operator,notes,status) VALUES (#{taskId},#{operator},#{notes},#{status})

@@ -79,6 +79,16 @@ public class TaskController extends BaseController {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
+        taskService.updateTaskComment(commentVo);
+        return result;
+    }
+
+    @ApiOperation(value = "回复任务", notes = "回复任务务完成详情")
+    @RequestMapping(value = "/reply", method = RequestMethod.POST)
+    public Map reply(@RequestBody(required = false) TaskCommentVo commentVo) {
+        Map result = new HashMap();
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
         taskService.saveTaskComment(commentVo);
         return result;
     }

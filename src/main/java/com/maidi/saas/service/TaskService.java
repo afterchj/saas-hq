@@ -47,4 +47,6 @@ public interface TaskService {
     List<TaskInfo> getTaskInfo(SearchDict dict);
 
     void updateById(TaskVo taskVo);
+
+    void updateTaskComment(TaskCommentVo commentVo);
 }

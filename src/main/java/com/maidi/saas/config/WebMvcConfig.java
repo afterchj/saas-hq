@@ -42,7 +42,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm"));
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
         return mappingJackson2HttpMessageConverter;

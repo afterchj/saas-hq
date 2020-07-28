@@ -20,6 +20,7 @@ public class TaskQuery extends BaseVo {
     private String principal;
     private String percentage;
     private String planCycle;
-    private List<TaskComment> content;
+    private String description;
+    private List<TaskCommentVo> content;
 
 }

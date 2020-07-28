@@ -55,4 +55,5 @@ public interface TaskDao {
 
     List<TaskLogVo> queryTaskLog(SearchDict dict);
 
+    void updateTaskComment(TaskCommentVo commentVo);
 }

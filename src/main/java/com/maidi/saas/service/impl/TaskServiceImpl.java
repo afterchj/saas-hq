@@ -1,6 +1,7 @@
 package com.maidi.saas.service.impl;
 
 import com.maidi.saas.dao.TaskDao;
+import com.maidi.saas.entity.TaskComment;
 import com.maidi.saas.entity.vo.*;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.service.TaskService;
@@ -46,7 +47,16 @@ public class TaskServiceImpl implements TaskService {
         } else {
             dict.setProjectId(id);
         }
-        return taskDao.queryTask(dict);
+        List<TaskQuery> taskQueries = taskDao.queryTask(dict);
+        for (TaskQuery taskQuery : taskQueries) {
+            List<TaskCommentVo> taskComments = taskQuery.getContent();
+            TaskCommentVo commentVo=new TaskCommentVo();
+            commentVo.setNotes(taskQuery.getDescription());
+            commentVo.setCompleteRate(taskQuery.getPercentage());
+            commentVo.setOperator(taskQuery.getPrincipal());
+            taskComments.add(commentVo);
+        }
+        return taskQueries;
     }
 
     @Override
@@ -118,5 +128,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void updateById(TaskVo taskVo) {
         taskDao.updateTaskById(taskVo);
+    }
+
+    @Override
+    public void updateTaskComment(TaskCommentVo commentVo) {
+        taskDao.updateTaskComment(commentVo);
     }
 }
