@@ -9,9 +9,11 @@ import com.maidi.saas.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.PathParam;
 import java.util.*;
 
 /**
@@ -42,6 +44,15 @@ public class TaskController extends BaseController {
         Map result = taskBiz.treeMap(dict);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
+        return result;
+    }
+
+    @DeleteMapping()
+    public Map delete(int id) {
+        Map result = new HashMap();
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        taskService.deleteTaskById(id);
         return result;
     }
 
@@ -231,6 +242,7 @@ public class TaskController extends BaseController {
 
     @RequestMapping(value = "/deleteTaskById", method = RequestMethod.GET)
     public Map deleteTaskById(int id) {
+        log.warn("id {}", id);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());

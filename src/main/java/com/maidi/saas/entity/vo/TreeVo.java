@@ -18,7 +18,7 @@ public class TreeVo {
     private String name;
     private int level = 1;
     private int projectId;
-    private int parentId;
+    private Integer parentId;
     private boolean isParent;
     private List<TaskInfo> taskInfo;
 }

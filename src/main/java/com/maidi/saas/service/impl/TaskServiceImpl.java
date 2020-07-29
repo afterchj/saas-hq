@@ -110,8 +110,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TreeVo> getProjects() {
-        return taskDao.getProjects();
+    public List<TreeVo> getProjects(int id) {
+        return taskDao.getProjects(id);
     }
 
     @Override

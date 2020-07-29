@@ -19,9 +19,9 @@ public interface TaskDao {
 
     List<TimeSheetVo> getTimeSheet();
 
-    List<TreeVo> getProjects();
+    List<TreeVo> getProjects(int id);
 
-    TreeVo getTreeById(@Param("taskId") Integer taskId,@Param("projectId") Integer projectId);
+    TreeVo getTreeById(@Param("taskId") Integer taskId, @Param("projectId") Integer projectId);
 
     List<TreeVo> listTree(@Param("projectId") Integer projectId, @Param("parentId") Integer parentId, @Param("level") int level);
 

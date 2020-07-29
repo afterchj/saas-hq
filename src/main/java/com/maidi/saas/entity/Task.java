@@ -11,9 +11,10 @@ import java.util.Date;
  * @Created by hjchen
  */
 @Entity
-@Table(name = "sm_task")
+@Table(name = "sm_task_back")
 public class Task extends BaseEntity {
     private Integer projectId;
+    @Column(columnDefinition = "int default 0",nullable = false)
     private Integer parentId;
     private Integer level;
     private String name;

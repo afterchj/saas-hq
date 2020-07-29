@@ -18,7 +18,7 @@ public class TaskVo extends BaseVo {
     private Integer flag = 1;
     private Integer sequence;
     private Integer projectId;
-    private Integer parentId;
+    private int parentId;
     private Boolean isParent;
     private String taskName;
     private String stage;

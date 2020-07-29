@@ -33,7 +33,12 @@
     </sql>
 
     <select id="getProjects" resultType="TreeVo">
-        SELECT id,name,level,id projectId ,id parentId FROM sm_project
+        SELECT id,name,level,id projectId FROM sm_project
+        <where>
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+        </where>
     </select>
 
     <select id="getTreeById" resultType="TreeVo" parameterType="int">
@@ -54,11 +59,15 @@
         <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
         <where>
             <if test="projectId!=null and projectId!=''">
-                and project_id=#{projectId} and level = 1
+                and project_id=#{projectId}
             </if>
             <if test="parentId!=null">
-                and parent_id=#{parentId} and level =#{level}
+                and parent_id=#{parentId}
             </if>
+            <if test="level!=null and level!=''">
+                and level =#{level}
+            </if>
+
         </where>
     </select>
 
@@ -96,13 +105,14 @@
 
     <select id="queryTaskInfo" resultType="TaskInfo" parameterType="SearchDict">
         SELECT
+        c.id,
         complete_rate percentage,
         CONCAT_WS('/',SUBSTRING( t.plan_start_time, 6,5 ),SUBSTRING( t.plan_end_time, 6,5 )) planCycle,
         t.principal
         FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
         <where>
             <if test="projectId!=null and projectId!=''">
-                AND t.project_id=#{projectId}
+                AND t.project_id=#{projectId} AND t.id=#{id}
             </if>
             <if test="taskId!=null and taskId!=''">
                 AND c.task_id=#{taskId}

@@ -55,8 +55,12 @@ public class SaasSmartHqApplicationTests {
     @Test
     public void testTree() {
         SearchDict searchDict = new SearchDict();
+        searchDict.setProjectId(256);
 //        Map result = taskBiz.treeMap(searchDict);
-        List<TreeVo> result = taskDao.listTree(7, 0, 0);
+//        List<TreeVo> result = taskDao.listTree(7, 0, 0);
+        List<TreeVo> result = taskDao.getProjects(7);
+        List<TaskInfo> taskInfo = taskDao.queryTaskInfo(searchDict);
+        log.warn("size {} result {}", taskInfo.size(),result);
         System.out.println(JSON.toJSONString(result));
     }
 
