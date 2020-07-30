@@ -17,11 +17,11 @@ public class Project extends BaseEntity {
     @Column(columnDefinition = "tinyint default 0")
     private Integer level;
     private Integer sequence;
-    private Integer bdId;
-    private Integer managerId;
-    private Integer typeId;
-    private Integer stageId;
-    private Integer customerId;
+    private String bdId;
+    private String managerId;
+    private String typeId;
+    private String stageId;
+    private String customerId;
     private String name;
     private Date planStartTime;
     private Date planEndTime;

@@ -71,6 +71,28 @@
         </where>
     </select>
 
+    <select id="listCommonTree" resultType="CommonTree" parameterType="int">
+        SELECT id,name,level,parent_id parentId FROM sm_timesheet
+        <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
+        <where>
+            <if test="parentId!=null and parentId!=''">
+                and parent_id=#{parentId}
+            </if>
+            <if test="level!=null and level!=''">
+                and level =#{level}
+            </if>
+        </where>
+    </select>
+
+    <select id="getCommonTreeById" resultType="CommonTree" parameterType="int">
+        SELECT id,name,level,parent_id parentId FROM sm_timesheet
+        <where>
+            <if test="id!=null and id!=''">
+                AND id=#{id}
+            </if>
+        </where>
+    </select>
+
     <select id="getTimeSheet" resultType="TimeSheetVo">
         SELECT id,labor_hour laborHour FROM sm_timesheet
     </select>
@@ -218,7 +240,7 @@
     </insert>
 
     <insert id="saveTimeSheet" parameterType="TimeSheetVo">
-        INSERT INTO sm_timesheet (name,laborHour) VALUES (#{laborName},#{laborHour})
+        INSERT INTO sm_timesheet (name,labor_hour,parent_id,level,flag) VALUES (#{laborName},#{laborHour},#{parentId},#{level},#{flag})
     </insert>
 
     <insert id="saveTemplate" parameterType="TemplateVo">

@@ -29,11 +29,13 @@
         SELECT
         <include refid="base_column_list"/>
         FROM sm_project p
-        INNER JOIN sm_user m ON m.id = p.manager_id
-        INNER JOIN sm_user bd ON bd.id = p.bd_id
+        LEFT JOIN sm_user m ON m.id = p.manager_id
+        LEFT JOIN sm_user bd ON bd.id = p.bd_id
         LEFT JOIN sm_customer cs ON p.customer_id = cs.id
-        INNER JOIN sm_dict d ON d.id = p.type_id
-        INNER JOIN sm_dict s ON s.id = p.stage_id
+        LEFT JOIN sm_dict d ON d.id = p.type_id
+        LEFT JOIN sm_dict s ON s.id = p.stage_id
+        LEFT JOIN (SELECT t.id,t.project_id,SUM(IFNULL(t.percentage,st.percentage)) projectProgress FROM sm_task t
+        LEFT JOIN sm_task st ON t.parent_id=st.id GROUP BY t.project_id) rs ON rs.project_id=p.id
         WHERE p.id=#{id}
     </select>
 
@@ -59,13 +61,13 @@
         SELECT
         <include refid="base_column_list"/>
         FROM sm_project p
-        INNER JOIN sm_user m ON m.id = p.manager_id
-        INNER JOIN sm_user bd ON bd.id = p.bd_id
+        LEFT JOIN sm_user m ON m.id = p.manager_id
+        LEFT JOIN sm_user bd ON bd.id = p.bd_id
         LEFT JOIN sm_customer cs ON p.customer_id = cs.id
-        INNER JOIN sm_dict d ON d.id = p.type_id
-        INNER JOIN sm_dict s ON s.id = p.stage_id
-        LEFT JOIN (SELECT t.id,t.project_id,SUM(IFNULL(t.percentage,st.percentage)) projectProgress FROM sm_task t LEFT
-        JOIN sm_task st ON t.parent_id=st.id GROUP BY t.project_id) rs ON rs.project_id=p.id
+        LEFT JOIN sm_dict d ON d.id = p.type_id
+        LEFT JOIN sm_dict s ON s.id = p.stage_id
+        LEFT JOIN (SELECT t.id,t.project_id,SUM(IFNULL(t.percentage,st.percentage)) projectProgress FROM sm_task t
+        LEFT JOIN sm_task st ON t.parent_id=st.id GROUP BY t.project_id) rs ON rs.project_id=p.id
         <where>
             <if test="projectName!=null and projectName!=''">
                 AND p.name LIKE CONCAT('%',#{projectName},'%')

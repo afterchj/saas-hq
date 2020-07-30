@@ -231,12 +231,21 @@ public class TaskController extends BaseController {
         return result;
     }
 
-    @RequestMapping(value = "/setTimeSheet", method = RequestMethod.POST)
+    @RequestMapping(value = "/addTimeSheet", method = RequestMethod.POST)
     public Map setTimeSheet(@RequestBody(required = false) TimeSheetVo sheetVo) {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
         taskService.saveTimeSheet(sheetVo);
+        return result;
+    }
+
+    @GetMapping("/listTree")
+    public Map timeSheet(Integer id) {
+        int treeId = id == null ? 0 : id;
+        Map result = taskBiz.treeTimeSheet(treeId);
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
         return result;
     }
 

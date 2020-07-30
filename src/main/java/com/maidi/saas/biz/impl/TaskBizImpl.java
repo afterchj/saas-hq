@@ -3,6 +3,7 @@ package com.maidi.saas.biz.impl;
 import com.maidi.saas.biz.TaskBiz;
 import com.maidi.saas.dao.TaskDao;
 import com.maidi.saas.entity.dd.SearchDict;
+import com.maidi.saas.entity.vo.CommonTree;
 import com.maidi.saas.entity.vo.TaskInfo;
 import com.maidi.saas.entity.vo.TreeVo;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +69,26 @@ public class TaskBizImpl implements TaskBiz {
         return result;
     }
 
+    @Override
+    public Map treeTimeSheet(int id) {
+        Map result = new HashMap();
+        if (id != 0) {
+            CommonTree commonTree = taskDao.getCommonTreeById(id);
+            log.warn("treeVo {}", commonTree);
+            List<CommonTree> subTree = taskDao.listCommonTree(commonTree.getId(), commonTree.getLevel() + 1);
+            if (subTree.size() == 0) {
+                subTree.add(commonTree);
+            }
+            buildTree(subTree);
+            result.put("task", subTree);
+        } else {
+            List<CommonTree> commonTrees = taskDao.listCommonTree(0, 1);
+            buildTree(commonTrees);
+            result.put("data", commonTrees);
+        }
+        return result;
+    }
+
     public boolean isParent(TreeVo treeVo, int type) {
         boolean flag = false;
         List<TreeVo> subTask = matchTask(treeVo, type);
@@ -107,4 +128,19 @@ public class TaskBizImpl implements TaskBiz {
             vo.setParent(isParent(vo, type));
         }
     }
+
+    public void buildTree(List<CommonTree> subTree) {
+        for (CommonTree commonTree : subTree) {
+            log.warn("commonTree {}", commonTree);
+            commonTree.setParent(haveSub(commonTree));
+        }
+    }
+
+    public boolean haveSub(CommonTree commonTree) {
+        boolean flag = false;
+        List<CommonTree> subTree = taskDao.listCommonTree(commonTree.getId(), commonTree.getLevel() + 1);
+        if (subTree.size() > 0) flag = true;
+        return flag;
+    }
+
 }

@@ -107,8 +107,8 @@ public class ProjectController extends BaseController {
     @ApiOperation(value = "创建项目", notes = "新增项目")
     @RequestMapping(value = "/addProject", method = RequestMethod.POST)
     public Map queryProjects(@RequestBody(required = false) String param) {
+        log.warn("param {}", param);
         ProjectVo projectVo = JSONObject.parseObject(param, ProjectVo.class);
-//        log.warn("projectVo {}", param);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());

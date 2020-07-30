@@ -15,4 +15,6 @@ import java.util.Map;
 public interface TaskBiz {
 
     Map treeMap(SearchDict dict);
+
+    Map treeTimeSheet(int id);
 }

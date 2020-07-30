@@ -18,16 +18,16 @@ public class ProjectVo extends BaseVo {
     private Integer sequence;
     private String projectName;
     private String projectCode;
-    private Date planStartTime;
-    private Date planEndTime;
-    private Date actualStartTime;
-    private Date actualEndTime;
+    private String planStartTime;
+    private String planEndTime;
+    private String actualStartTime;
+    private String actualEndTime;
     private String projectDesc;
     private String extFields;
-    private Integer projectBDId;
-    private Integer projectStageId;
-    private Integer projectManagerId;
-    private Integer projectTypeId;
-    private Integer customerId;
+    private String projectBDId;
+    private String projectStageId;
+    private String projectManagerId;
+    private String projectTypeId;
+    private String customerId;
 
 }
