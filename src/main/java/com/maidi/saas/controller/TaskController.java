@@ -106,7 +106,7 @@ public class TaskController extends BaseController {
 
     @ApiOperation(value = "增加备注", notes = "修改任务状态")
     @RequestMapping(value = "/addNotes", method = RequestMethod.POST)
-    public Map addNotes(@RequestBody(required = false) TaskRemarkVo remarkVo) {
+    public Map addNotes(@RequestBody(required = false) TaskLogVo remarkVo) {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());

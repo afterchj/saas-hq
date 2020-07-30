@@ -32,7 +32,7 @@ public interface TaskService {
 
     int getType(Integer templateId);
 
-    void saveTaskLog(TaskRemarkVo remarkVo);
+    void saveTaskLog(TaskLogVo taskLogVo);
 
     List<TaskLogVo> queryTaskLog(SearchDict dict);
 

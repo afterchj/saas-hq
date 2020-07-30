@@ -49,7 +49,7 @@ public interface TaskDao {
 
     int saveTaskComment(TaskCommentVo commentVo);
 
-    int saveTaskLog(TaskRemarkVo remarkVo);
+    int saveTaskLog(TaskLogVo taskLogVo);
 
     void saveTemplate(TemplateVo templateVo);
 

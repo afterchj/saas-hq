@@ -142,7 +142,8 @@
     </select>
     <select id="queryTaskLog" resultType="TaskLogVo" parameterType="SearchDict">
         SELECT
-        t.id,
+        l.id,
+        t.id taskId,
         t.principal,
         t.create_time createTime,
         l.operator,
@@ -151,7 +152,7 @@
         l.update_time updateTime
         FROM
         sm_task t
-        LEFT JOIN sm_task_log l ON t.id = l.task_id
+        INNER JOIN sm_task_log l ON t.id = l.task_id
         <where>
             <if test="principal!=null and principal!=''">
                 AND t.principal LIKE CONCAT('%',#{principal},'%')
@@ -212,7 +213,7 @@
         UPDATE sm_task SET percentage=#{completeRate},description=#{notes},update_time=now() WHERE id=#{taskId}
     </update>
 
-    <insert id="saveTaskLog" parameterType="TaskRemarkVo">
+    <insert id="saveTaskLog" parameterType="TaskLogVo">
         INSERT INTO sm_task_log (task_id,operator,notes,status) VALUES (#{taskId},#{operator},#{notes},#{status})
     </insert>
 

@@ -2,6 +2,7 @@ package com.maidi.saas.service.impl;
 
 import com.maidi.saas.dao.TaskDao;
 import com.maidi.saas.entity.TaskComment;
+import com.maidi.saas.entity.TaskLog;
 import com.maidi.saas.entity.vo.*;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.service.TaskService;
@@ -85,8 +86,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void saveTaskLog(TaskRemarkVo remarkVo) {
-        taskDao.saveTaskLog(remarkVo);
+    public void saveTaskLog(TaskLogVo taskLogVo) {
+        taskDao.saveTaskLog(taskLogVo);
     }
 
     @Override
