@@ -21,7 +21,7 @@ public class ZuulServiceImpl implements ZuulUserService {
     }
 
     @Override
-    public String listOption() {
-        return zuulUserService.listOption();
+    public String listProjectOption() {
+        return zuulUserService.listProjectOption();
     }
 }

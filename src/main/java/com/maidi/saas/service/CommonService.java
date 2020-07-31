@@ -15,4 +15,5 @@ public interface CommonService {
     List<Item> getOptions(String tableName, String type);
 
     void insertUsers(Map map);
+    void insertDict(String result);
 }

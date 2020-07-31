@@ -3,15 +3,13 @@ package com.maidi.saas.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.maidi.saas.entity.dd.ResultDict;
+import com.maidi.saas.entity.vo.DictVo;
 import com.maidi.saas.entity.vo.Item;
-import com.maidi.saas.entity.vo.OptionDict;
 import com.maidi.saas.entity.vo.UserVo;
 import com.maidi.saas.service.CommonService;
-import com.maidi.saas.service.ProjectService;
 import com.maidi.saas.service.ZuulUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @Classname MainController
@@ -37,7 +36,7 @@ public class MainController extends BaseController {
     @Autowired
     private ZuulUserService zuulUserService;
 
-    @RequestMapping("/batch")
+    @RequestMapping("/batchUser")
     public String batchInsertUser() {
         String result = zuulUserService.getAllUser();
         JSONObject jsonObject = JSONObject.parseObject(result);
@@ -49,12 +48,19 @@ public class MainController extends BaseController {
         return "ok";
     }
 
+    @RequestMapping("/batchDict")
+    public String batchInsertDict() {
+        String result = zuulUserService.listProjectOption();
+        commonService.insertDict(result);
+        return "success";
+    }
+
     @RequestMapping(value = "/user/item", method = RequestMethod.GET)
     public Map users() {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-        List<Item> users = commonService.getOptions("sm_user",null);
+        List<Item> users = commonService.getOptions("sm_user", null);
         result.put("data", users);
         return result;
     }
@@ -64,7 +70,7 @@ public class MainController extends BaseController {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-        List<Item> dicts = commonService.getOptions("sm_dict","");
+        List<Item> dicts = commonService.getOptions("sm_dict", "");
         result.put("data", dicts);
         return result;
     }

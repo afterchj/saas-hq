@@ -28,7 +28,7 @@ public class ZuulUserHystrix implements ZuulUserService {
     }
 
     @Override
-    public String listOption() {
+    public String listProjectOption() {
         return resultMap();
     }
 }

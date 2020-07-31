@@ -25,6 +25,6 @@ public interface ZuulUserService {
     String getAllUser();
 
     @RequestMapping(value = "/basic/datadictionary/selproject", method = RequestMethod.GET)
-    String listOption();
+    String listProjectOption();
 }
 

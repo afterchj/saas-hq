@@ -16,5 +16,6 @@ public interface CommonDao {
 
     List<Item> getOptions(@Param("tableName") String tableName,@Param("type") String type);
     void insertUser(Map map);
+    void insertDict(Map map);
 
 }

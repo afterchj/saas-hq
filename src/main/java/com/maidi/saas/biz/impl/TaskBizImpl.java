@@ -80,7 +80,7 @@ public class TaskBizImpl implements TaskBiz {
                 subTree.add(commonTree);
             }
             buildTree(subTree);
-            result.put("task", subTree);
+            result.put("data", subTree);
         } else {
             List<CommonTree> commonTrees = taskDao.listCommonTree(0, 1);
             buildTree(commonTrees);

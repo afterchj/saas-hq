@@ -10,7 +10,8 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "sm_user")
+@Table(name = "sm_user",uniqueConstraints = @UniqueConstraint(columnNames = {"id", "name"}))
 public class User extends BaseEntity {
+    @Column(length = 64)
     private String name;
 }

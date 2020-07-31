@@ -13,10 +13,23 @@
     </select>
 
     <insert id="insertUser" parameterType="list">
-        REPLACE INTO sm_user(id,name) VALUES
+        INSERT IGNORE INTO sm_user(id,name) VALUES
         <foreach collection="list" item="u" index="index" separator=",">
             (#{u.id},#{u.username})
         </foreach>
+    </insert>
+    <insert id="insertDict" parameterType="map">
+        INSERT IGNORE INTO sm_dict(id,name,type) VALUES
+        <if test="type==1">
+            <foreach collection="list" item="u" index="index" separator=",">
+                (#{u.dictionary_number},#{u.dictionary_name},1)
+            </foreach>
+        </if>
+        <if test="type==2">
+            <foreach collection="list" item="u" index="index" separator=",">
+                (#{u.dictionary_number},#{u.dictionary_name},2)
+            </foreach>
+        </if>
     </insert>
 
 </mapper>

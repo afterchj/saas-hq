@@ -89,6 +89,18 @@ public class ProjectController extends BaseController {
         return result;
     }
 
+    @ApiOperation(value = "测试项目查询", notes = " 测试项目查询")
+    @RequestMapping(value = "/queryProjects", method = RequestMethod.POST)
+    public Map getAll(@RequestBody(required = false) SearchDict dict) {
+        log.warn("params {}", dict);
+        Map result = new HashMap();
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        List<ProjectQuery> projectQueries = projectService.queryProject(dict);
+        result.put("data", projectQueries);
+        return result;
+    }
+
     @ApiOperation(value = "项目查询", notes = "根据条件查询项目列表")
     @RequestMapping(value = "/queryList", method = RequestMethod.GET)
     public Map queryProject(SearchDict dict) {
@@ -114,18 +126,6 @@ public class ProjectController extends BaseController {
         result.put("msg", ResultDict.SUCCESS.getValue());
         int id = projectService.save(projectVo);
         log.warn("id {}", id);
-        return result;
-    }
-
-    @ApiOperation(value = "测试项目查询", notes = " 测试项目查询")
-    @RequestMapping(value = "/queryProjects", method = RequestMethod.POST)
-    public Map getAll(@RequestBody(required = false) SearchDict dict) {
-        log.warn("params {}", dict);
-        Map result = new HashMap();
-        result.put("code", ResultDict.SUCCESS.getCode());
-        result.put("msg", ResultDict.SUCCESS.getValue());
-        List<ProjectQuery> projectQueries = projectService.queryProject(dict);
-        result.put("data", projectQueries);
         return result;
     }
 

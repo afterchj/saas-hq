@@ -73,7 +73,7 @@ public class SaasSmartHqApplicationTests {
     @Test
     public void testDict() {
 //        log.warn("feign dict {}", feignDictService.listOption());
-        log.warn("zuul dict {}", zuulUserService.listOption());
+        log.warn("zuul dict {}", zuulUserService.listProjectOption());
     }
 
     @Test

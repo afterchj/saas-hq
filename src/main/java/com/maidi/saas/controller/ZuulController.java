@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by hongjian.chen on 2018/12/4.
+ * Created by hongjian.chen on 2020/7/14.
  */
 
 @RestController
 @Api(description = "用户模块API接口")
-public class FeignUserController {
+public class ZuulController {
 
     @Autowired
     private FeignUserService feignUserService;
