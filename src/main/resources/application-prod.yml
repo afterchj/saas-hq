@@ -9,6 +9,8 @@ spring:
     password: chj123456
   freemarker:
     prefer-file-system-access: false
+  redis:
+    host: 47.111.232.105
 feign:
   hystrix:
     enabled: true

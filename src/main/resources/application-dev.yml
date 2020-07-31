@@ -9,6 +9,9 @@ spring:
     password: root
   freemarker:
     prefer-file-system-access: false
+  redis:
+    host: 127.0.0.1
+    password: '@after'
 feign:
   hystrix:
     enabled: true
