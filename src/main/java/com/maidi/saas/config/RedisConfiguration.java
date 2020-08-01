@@ -13,6 +13,8 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -65,13 +67,23 @@ public class RedisConfiguration implements CachingConfigurer {
     }
 
     @Bean
-    MessageListenerAdapter listenerAdapter1(RedisService receiver) {
+    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter1, MessageListenerAdapter listenerAdapter2) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        //订阅了一个叫chat的通道
+        container.addMessageListener(listenerAdapter1, new PatternTopic("test_topic"));
+        container.addMessageListener(listenerAdapter2, new PatternTopic("demo_topic"));
+        return container;
+    }
+
+    @Bean
+    public MessageListenerAdapter listenerAdapter1(RedisService receiver) {
         //与channel1绑定的适配器,收到消息时执行RedisConsumer类中的consumeMsg方法
         return new MessageListenerAdapter(receiver, "consumeMsg");
     }
 
     @Bean
-    MessageListenerAdapter listenerAdapter2(RedisService receiver) {
+    public MessageListenerAdapter listenerAdapter2(RedisService receiver) {
         return new MessageListenerAdapter(receiver, "receiverMessage");
     }
 }
