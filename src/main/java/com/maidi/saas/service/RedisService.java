@@ -23,16 +23,21 @@ public class RedisService {
         redisTemplate.convertAndSend(topic, map);
     }
 
+    public void pushMsg1(String topic, Map msg) {
+        redisTemplate.convertAndSend(topic, msg);
+    }
+
     public void consumeMsg(String msg) {
         System.out.println("---------------分割线----------------");
         System.out.println(msg);
-//        JSONObject jsonObject = JSONObject.parseObject(msg);
-
+        Map receive = JSONObject.parseObject(msg, Map.class);
+        log.warn("receiveMsg=" + receive.get("name"));
     }
 
     public void receiverMessage(String msg) {
-        log.warn("msg {}", msg);
-//        JSONObject jsonObject = JSONObject.parseObject(msg);
-
+        System.out.println("---------------分割线----------------");
+        System.out.println(msg);
+        Map receive = JSONObject.parseObject(msg, Map.class);
+        log.warn("receiveMsg=" + receive.get("name"));
     }
 }

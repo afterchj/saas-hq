@@ -51,6 +51,16 @@ public class SaasSmartHqApplicationTests {
 
     @Autowired
     private OssPropertiesUtils ossPropertiesUtils;
+    @Autowired
+    private RedisService redisService;
+
+    @Test
+    public void testPush() {
+        Map map = new HashMap();
+        map.put("id", 1);
+        map.put("name", "测试1");
+        redisService.pushMsg1("demo_topic", map);
+    }
 
     @Test
     public void testTree() {
@@ -60,7 +70,7 @@ public class SaasSmartHqApplicationTests {
 //        List<TreeVo> result = taskDao.listTree(7, 0, 0);
         List<TreeVo> result = taskDao.getProjects(7);
         List<TaskInfo> taskInfo = taskDao.queryTaskInfo(searchDict);
-        log.warn("size {} result {}", taskInfo.size(),result);
+        log.warn("size {} result {}", taskInfo.size(), result);
         System.out.println(JSON.toJSONString(result));
     }
 
