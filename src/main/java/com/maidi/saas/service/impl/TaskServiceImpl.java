@@ -51,7 +51,7 @@ public class TaskServiceImpl implements TaskService {
         List<TaskQuery> taskQueries = taskDao.queryTask(dict);
         for (TaskQuery taskQuery : taskQueries) {
             List<TaskCommentVo> taskComments = taskQuery.getContent();
-            TaskCommentVo commentVo=new TaskCommentVo();
+            TaskCommentVo commentVo = new TaskCommentVo();
             commentVo.setNotes(taskQuery.getDescription());
             commentVo.setCompleteRate(taskQuery.getPercentage());
             commentVo.setOperator(taskQuery.getPrincipal());
@@ -101,6 +101,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public TimeSheetVo getTimeSheetById(int id) {
+        return taskDao.getTimeSheetById(id);
+    }
+
+    @Override
     public void deleteTaskById(int id) {
         taskDao.deleteTaskById(id);
     }
@@ -135,4 +140,10 @@ public class TaskServiceImpl implements TaskService {
     public void updateTaskComment(TaskCommentVo commentVo) {
         taskDao.updateTaskComment(commentVo);
     }
+
+    @Override
+    public void updateTimeSheetById(TimeSheetVo sheetVo) {
+        taskDao.updateTimeSheetById(sheetVo);
+    }
+
 }

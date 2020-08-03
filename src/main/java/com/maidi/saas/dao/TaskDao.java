@@ -19,6 +19,8 @@ public interface TaskDao {
 
     List<TimeSheetVo> getTimeSheet();
 
+    TimeSheetVo getTimeSheetById(int id);
+
     CommonTree getCommonTreeById(int id);
 
     List<TreeVo> getProjects(int id);
@@ -60,4 +62,6 @@ public interface TaskDao {
     List<TaskLogVo> queryTaskLog(SearchDict dict);
 
     void updateTaskComment(TaskCommentVo commentVo);
+
+    void updateTimeSheetById(TimeSheetVo sheetVo);
 }

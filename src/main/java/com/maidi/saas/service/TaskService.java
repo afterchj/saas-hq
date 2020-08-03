@@ -38,9 +38,11 @@ public interface TaskService {
 
     List<TimeSheetVo> getTimeSheet();
 
+    TimeSheetVo getTimeSheetById(int id);
+
     void deleteTaskById(int id);
 
-    List<TreeVo> listTree(int projectId, int parentId,int level);
+    List<TreeVo> listTree(int projectId, int parentId, int level);
 
     List<TreeVo> getProjects(int id);
 
@@ -49,4 +51,6 @@ public interface TaskService {
     void updateById(TaskVo taskVo);
 
     void updateTaskComment(TaskCommentVo commentVo);
+
+    void updateTimeSheetById(TimeSheetVo sheetVo);
 }

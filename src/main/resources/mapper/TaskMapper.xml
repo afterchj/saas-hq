@@ -97,6 +97,15 @@
         SELECT id,labor_hour laborHour FROM sm_timesheet
     </select>
 
+    <select id="getTimeSheetById" resultType="TimeSheetVo" parameterType="int">
+        SELECT id,name laborName,labor_hour laborHour,flag,level,parent_id parentId FROM sm_timesheet
+        <where>
+            <if test="id!=null and id!=''">
+                AND id=#{id}
+            </if>
+        </where>
+    </select>
+
     <select id="getAll" resultMap="taskMap">
         SELECT
         <include refid="base_column_list"/>
@@ -209,7 +218,7 @@
         )
     </insert>
 
-    <update id="updateTaskById" parameterType="TaskVo" keyProperty="id" useGeneratedKeys="true">
+    <update id="updateTaskById" parameterType="TaskVo">
         UPDATE sm_task
         <set>
             update_time=now(),
@@ -223,6 +232,16 @@
             <if test="percentage != null">percentage=#{percentage},</if>
             <if test="planStartTime != null">plan_start_time=#{planStartTime},</if>
             <if test="planEndTime != null">plan_end_time=#{planEndTime},</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+ <update id="updateTimeSheetById" parameterType="TimeSheetVo">
+        UPDATE sm_timesheet
+        <set>
+            update_time=now(),
+            <if test="laborName != null">name=#{laborName},</if>
+            <if test="laborHour != null">labor_hour=#{laborHour},</if>
         </set>
         WHERE id=#{id}
     </update>
