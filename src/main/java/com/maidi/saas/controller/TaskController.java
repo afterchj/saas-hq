@@ -260,6 +260,7 @@ public class TaskController extends BaseController {
 
     @GetMapping("/listTree")
     public Map timeSheet(Integer id) {
+        log.warn("id {}", id);
         int treeId = id == null ? 0 : id;
         Map result = taskBiz.treeTimeSheet(treeId);
         result.put("code", ResultDict.SUCCESS.getCode());
@@ -276,5 +277,13 @@ public class TaskController extends BaseController {
         taskService.deleteTaskById(id);
         return result;
     }
-
+    @RequestMapping(value = "/deleteSheetById", method = RequestMethod.GET)
+    public Map deleteSheetById(int id) {
+        log.warn("id {}", id);
+        Map result = new HashMap();
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        taskService.deleteSheetById(id);
+        return result;
+    }
 }

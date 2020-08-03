@@ -61,3 +61,7 @@ oss:
     keySecret: R6l66VPAXsY30cf7xU7vt1Ia0naN8Z
     bucketName: qiyuan-2020
     fileHost: ssm
+#log打印格式
+logging:
+  pattern:
+    console: '%d - %p %c{1}:%L %m%n'

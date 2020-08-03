@@ -146,4 +146,9 @@ public class TaskServiceImpl implements TaskService {
         taskDao.updateTimeSheetById(sheetVo);
     }
 
+    @Override
+    public void deleteSheetById(int id) {
+        taskDao.deleteSheetById(id);
+    }
+
 }

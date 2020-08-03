@@ -236,7 +236,7 @@
         WHERE id=#{id}
     </update>
 
- <update id="updateTimeSheetById" parameterType="TimeSheetVo">
+    <update id="updateTimeSheetById" parameterType="TimeSheetVo">
         UPDATE sm_timesheet
         <set>
             update_time=now(),
@@ -277,6 +277,10 @@
 
     <delete id="deleteTaskById" parameterType="int">
         DELETE FROM sm_task WHERE id=#{id}
+    </delete>
+
+    <delete id="deleteSheetById" parameterType="int">
+        DELETE FROM sm_timesheet WHERE id=#{id}
     </delete>
 
     <update id="updateStatus">

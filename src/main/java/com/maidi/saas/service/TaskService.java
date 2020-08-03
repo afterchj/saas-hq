@@ -53,4 +53,6 @@ public interface TaskService {
     void updateTaskComment(TaskCommentVo commentVo);
 
     void updateTimeSheetById(TimeSheetVo sheetVo);
+
+    void deleteSheetById(int id);
 }
