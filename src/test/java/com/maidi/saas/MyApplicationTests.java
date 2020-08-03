@@ -1,5 +1,6 @@
 package com.maidi.saas;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.maidi.saas.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,11 @@ public class MyApplicationTests {
 
     @Test
     public void testPush() {
-        JSONObject map=new JSONObject();
+        Map map = new HashMap();
         map.put("id", 1);
         map.put("name", "测试1");
+//        String params = JSON.toJSONString(map);
+//        log.warn("params {}",params);
         redisService.pushMsg("test_topic", map);
     }
 }

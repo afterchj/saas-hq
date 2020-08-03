@@ -67,12 +67,12 @@ public class RedisConfiguration implements CachingConfigurer {
     }
 
     @Bean
-    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter1, MessageListenerAdapter listenerAdapter2) {
+    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, RedisService redisService) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         //订阅了一个叫chat的通道
-        container.addMessageListener(listenerAdapter1, new PatternTopic("test_topic"));
-        container.addMessageListener(listenerAdapter2, new PatternTopic("demo_topic"));
+        container.addMessageListener(listenerAdapter1(redisService), new PatternTopic("test_topic"));
+        container.addMessageListener(listenerAdapter2(redisService), new PatternTopic("demo_topic"));
         return container;
     }
 

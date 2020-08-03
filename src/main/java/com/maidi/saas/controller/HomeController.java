@@ -1,5 +1,7 @@
 package com.maidi.saas.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.maidi.saas.entity.dd.ResultDict;
 import com.maidi.saas.service.RedisService;
 import com.maidi.saas.utils.OSSFileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -34,13 +36,16 @@ public class HomeController {
     @Autowired
     private RedisService redisService;
 
-    @RequestMapping(value = "/push", method = RequestMethod.GET)
-    public String testPush() {
-        Map map = new HashMap();
-        map.put("id", 1);
-        map.put("name", "测试1");
-        redisService.pushMsg1("demo_topic", map);
-        return "success";
+    @RequestMapping(value = "/push", method = RequestMethod.POST)
+    public Map testPush(@RequestBody(required = false) String params) {
+        log.warn("params {}",params);
+        Map result = new HashMap();
+        Map map = JSON.parseObject(params,Map.class);
+        log.warn("map {}",map);
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        redisService.pushMsg("test_topic", map);
+        return result;
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

@@ -1,5 +1,6 @@
 package com.maidi.saas.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class RedisService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public void pushMsg(String topic, JSONObject map) {
-        redisTemplate.convertAndSend(topic, map);
+    public void pushMsg(String topic,Map params) {
+        redisTemplate.convertAndSend(topic, params);
     }
 
     public void pushMsg1(String topic, Map msg) {
@@ -29,9 +30,9 @@ public class RedisService {
 
     public void consumeMsg(String msg) {
         System.out.println("---------------分割线----------------");
-        System.out.println(msg);
-        Map receive = JSONObject.parseObject(msg, Map.class);
-        log.warn("receiveMsg=" + receive.get("name"));
+        log.warn("msg {}",msg);
+        Map receive = JSON.parseObject(msg, Map.class);
+        log.warn("name=" + receive.get("name"));
     }
 
     public void receiverMessage(String msg) {
