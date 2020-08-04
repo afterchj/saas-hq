@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import sun.reflect.generics.tree.Tree;
 
@@ -52,14 +53,19 @@ public class SaasSmartHqApplicationTests {
     @Autowired
     private OssPropertiesUtils ossPropertiesUtils;
     @Autowired
-    private RedisService redisService;
+    private RedisTemplate<String,Object> redisTemplate;
 
     @Test
     public void testPush() {
+        OptionDict dict=new OptionDict();
+        dict.setId(1);
+        dict.setName("小陈");
+
         Map map = new HashMap();
         map.put("id", 1);
         map.put("name", "测试1");
-        redisService.pushMsg1("demo_topic", map);
+
+        redisTemplate.convertAndSend("demo_topic", dict);
     }
 
     @Test

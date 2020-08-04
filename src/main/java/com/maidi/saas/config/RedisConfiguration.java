@@ -2,14 +2,8 @@ package com.maidi.saas.config;
 
 import com.maidi.saas.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurer;
-import org.springframework.cache.interceptor.CacheErrorHandler;
-import org.springframework.cache.interceptor.CacheResolver;
-import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -24,38 +18,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 
 @Configuration
-public class RedisConfiguration implements CachingConfigurer {
+public class RedisConfiguration {
+
+    @Autowired
+    private RedisService redisService;
 
     @Autowired
     private RedisConnectionFactory redisConnectionFactory;
-
-    @Override
-    public CacheManager cacheManager() {
-        return RedisCacheManager.create(redisConnectionFactory);
-    }
-
-    @Override
-    public CacheResolver cacheResolver() {
-        return null;
-    }
-
-    @Override
-    public KeyGenerator keyGenerator() {
-        return (target, method, params) -> {
-            StringBuilder sb = new StringBuilder();
-            sb.append(target.getClass().getName());
-            sb.append(method.getName());
-            for (Object obj : params) {
-                sb.append(obj.toString());
-            }
-            return sb.toString();
-        };
-    }
-
-    @Override
-    public CacheErrorHandler errorHandler() {
-        return null;
-    }
 
     @Bean
     public RedisTemplate redisTemplate() {
@@ -67,23 +36,23 @@ public class RedisConfiguration implements CachingConfigurer {
     }
 
     @Bean
-    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, RedisService redisService) {
+    public RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         //订阅了一个叫chat的通道
-        container.addMessageListener(listenerAdapter1(redisService), new PatternTopic("test_topic"));
-        container.addMessageListener(listenerAdapter2(redisService), new PatternTopic("demo_topic"));
+        container.addMessageListener(listenerAdapter1(), new PatternTopic("test_topic"));
+        container.addMessageListener(listenerAdapter2(), new PatternTopic("demo_topic"));
         return container;
     }
 
     @Bean
-    public MessageListenerAdapter listenerAdapter1(RedisService receiver) {
+    public MessageListenerAdapter listenerAdapter1() {
         //与channel1绑定的适配器,收到消息时执行RedisConsumer类中的consumeMsg方法
-        return new MessageListenerAdapter(receiver, "consumeMsg");
+        return new MessageListenerAdapter(redisService, "consumeMsg");
     }
 
     @Bean
-    public MessageListenerAdapter listenerAdapter2(RedisService receiver) {
-        return new MessageListenerAdapter(receiver, "receiverMessage");
+    public MessageListenerAdapter listenerAdapter2() {
+        return new MessageListenerAdapter(redisService, "receiverMessage");
     }
 }

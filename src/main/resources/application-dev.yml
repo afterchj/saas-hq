@@ -4,9 +4,9 @@ spring:
   profiles: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.132:3306/ssm_hq?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=GMT%2B8
-    username: root
-    password: root
+    url: jdbc:mysql://rm-bp11dok2aa3314h5hfo.mysql.rds.aliyuncs.com/ssm_hq?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&serverTimezone=GMT%2B8
+    username: chenhongjian
+    password: chj123456
   freemarker:
     prefer-file-system-access: false
   redis:

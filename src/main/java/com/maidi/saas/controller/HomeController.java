@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,17 +35,15 @@ public class HomeController {
     private Integer port;
 
     @Autowired
-    private RedisService redisService;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @RequestMapping(value = "/push", method = RequestMethod.POST)
     public Map testPush(@RequestBody(required = false) String params) {
-        log.warn("params {}",params);
+        log.warn("params {}", params);
         Map result = new HashMap();
-        Map map = JSON.parseObject(params,Map.class);
-        log.warn("map {}",map);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-        redisService.pushMsg("test_topic", map);
+        redisTemplate.convertAndSend("test_topic", JSON.parseObject(params));
         return result;
     }
 

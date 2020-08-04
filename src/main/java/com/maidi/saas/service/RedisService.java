@@ -17,28 +17,20 @@ import java.util.Map;
 @Slf4j
 public class RedisService {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
-
-    public void pushMsg(String topic,Map params) {
-        redisTemplate.convertAndSend(topic, params);
-    }
-
-    public void pushMsg1(String topic, Map msg) {
-        redisTemplate.convertAndSend(topic, msg);
-    }
-
     public void consumeMsg(String msg) {
         System.out.println("---------------分割线----------------");
-        log.warn("msg {}",msg);
-        Map receive = JSON.parseObject(msg, Map.class);
+        log.warn("msg {}", msg);
+        Map<String, Object> receive = JSON.parseObject(msg);
+        for (String key : receive.keySet()) {
+            System.out.println("key=" + key + "\t and value=" + receive.get(key));
+        }
         log.warn("name=" + receive.get("name"));
     }
 
     public void receiverMessage(String msg) {
         System.out.println("---------------分割线----------------");
-        System.out.println(msg);
-        Map receive = JSONObject.parseObject(msg, Map.class);
-        log.warn("receiveMsg=" + receive.get("name"));
+        log.warn("msg {}", msg);
+        Map receive = JSON.parseObject(msg);
+        log.warn("name=" + receive.get("name"));
     }
 }
