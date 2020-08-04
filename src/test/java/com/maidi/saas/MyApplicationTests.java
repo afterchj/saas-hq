@@ -19,7 +19,7 @@ import java.util.Map;
 public class MyApplicationTests {
 
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Test
     public void testPush() {

@@ -53,7 +53,7 @@ public class SaasSmartHqApplicationTests {
     @Autowired
     private OssPropertiesUtils ossPropertiesUtils;
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Test
     public void testPush() {

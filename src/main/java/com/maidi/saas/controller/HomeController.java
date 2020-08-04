@@ -35,7 +35,7 @@ public class HomeController {
     private Integer port;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(value = "/push", method = RequestMethod.POST)
     public Map testPush(@RequestBody(required = false) String params) {
