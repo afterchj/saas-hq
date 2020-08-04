@@ -1,14 +1,11 @@
 package com.maidi.saas.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.maidi.saas.entity.dd.ResultDict;
-import com.maidi.saas.service.RedisService;
 import com.maidi.saas.utils.OSSFileUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +32,7 @@ public class HomeController {
     private Integer port;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private StringRedisTemplate redisTemplate;
 
     @RequestMapping(value = "/push", method = RequestMethod.POST)
     public Map testPush(@RequestBody(required = false) String params) {
@@ -43,7 +40,7 @@ public class HomeController {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-        redisTemplate.convertAndSend("test_topic", JSON.parseObject(params));
+        redisTemplate.convertAndSend("test_topic",params);
         return result;
     }
 
