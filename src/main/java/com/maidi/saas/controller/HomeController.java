@@ -31,6 +31,11 @@ public class HomeController {
     @Value("${server.port}")
     private Integer port;
 
+    @Value("${downPath}")
+    private String downPath;
+    @Value("${uploadPath}")
+    private String uploadPath;
+
     @Autowired
     private StringRedisTemplate redisTemplate;
 
@@ -40,7 +45,7 @@ public class HomeController {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-        redisTemplate.convertAndSend("test_topic",params);
+        redisTemplate.convertAndSend("test_topic", params);
         return result;
     }
 
@@ -49,27 +54,30 @@ public class HomeController {
         return "current profiles is " + profile + ",server port is " + port;
     }
 
-
     @PostMapping("/upload")
-    public String upload(@RequestParam("file") MultipartFile file) {
+    public Map upload(@RequestParam("file") MultipartFile file) {
+        Map result = new HashMap();
         if (file.isEmpty()) {
-            return "上传失败，请选择文件";
+            result.put("code", ResultDict.PARAMS_BLANK.getCode());
+            result.put("msg", ResultDict.PARAMS_BLANK.getValue());
         }
         String fileName = file.getOriginalFilename();
-        long size = file.getSize() / 1024;
+        double size = file.getSize() / 1024.0;
         log.warn("fileName {} size {}", fileName, size);
-
-        String filePath = "D:/mnt/";
         try {
-//            File dest = new File(filePath, fileName);
-            File dest = File.createTempFile(filePath, fileName);
+            File dest = new File(uploadPath, fileName);
+//            File dest = File.createTempFile(uploadPath, fileName);
             file.transferTo(dest);
-            OSSFileUtil.upload(fileName, dest);
-            log.info("上传成功");
-            return "上传成功";
+            String path = OSSFileUtil.upload(fileName, dest);
+            log.warn("destPath {} targetPath", dest.getParent(), path);
+            result.put("code", ResultDict.SUCCESS.getCode());
+            result.put("msg", ResultDict.SUCCESS.getValue());
+            return result;
         } catch (IOException e) {
-            log.error(e.toString(), e);
+            log.error("errorMessage {}", e);
+            result.put("code", ResultDict.PARAMS_NOT_PARSED.getCode());
+            result.put("msg", ResultDict.PARAMS_NOT_PARSED.getValue());
         }
-        return "上传失败！";
+        return result;
     }
 }
