@@ -1,4 +1,4 @@
-
+uploadPath: /mnt/
 server:
   port: 8080
   servlet:

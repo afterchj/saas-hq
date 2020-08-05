@@ -1,3 +1,4 @@
+uploadPath: c:/mnt/
 server:
   port: 8080
 spring:

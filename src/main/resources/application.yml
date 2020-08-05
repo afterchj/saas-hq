@@ -1,5 +1,4 @@
 downPath: http://qiyuan-2020.oss-cn-hangzhou.aliyuncs.com/
-uploadPath: c:/mnt/
 spring:
   application:
     name: project-manager
