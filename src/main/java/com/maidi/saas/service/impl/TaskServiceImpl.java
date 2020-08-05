@@ -20,6 +20,7 @@ import java.util.Set;
  * @Created by hjchen
  */
 @Service
+@Slf4j
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
@@ -43,11 +44,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskQuery> queryTask(SearchDict dict) {
         int id = Integer.parseInt(dict.getId());
-        if (dict.getFlag() == 2) {
+        if (dict.getFlag() != 0) {
             dict.setTaskId(id);
         } else {
             dict.setProjectId(id);
         }
+        log.warn("queryTask {}", dict);
         List<TaskQuery> taskQueries = taskDao.queryTask(dict);
         for (TaskQuery taskQuery : taskQueries) {
             List<TaskCommentVo> taskComments = taskQuery.getContent();

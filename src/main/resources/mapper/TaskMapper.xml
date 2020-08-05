@@ -154,13 +154,14 @@
     <select id="queryTask" resultMap="taskMap" parameterType="SearchDict">
         SELECT
         <include refid="base_column_list"/>
-        FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
+        FROM sm_task t
+        LEFT JOIN sm_task_comment c ON t.id=c.task_id
         <where>
             <if test="projectId!=null and projectId!=''">
                 AND t.project_id=#{projectId}
             </if>
             <if test="taskId!=null and taskId!=''">
-                AND c.task_id=#{taskId}
+                AND t.id=#{taskId}
             </if>
             <if test="principal!=null and principal!=''">
                 AND c.operator LIKE CONCAT('%',#{principal},'%')

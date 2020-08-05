@@ -44,7 +44,6 @@ public class TaskBizImpl implements TaskBiz {
         } else {
             dict.setTaskId(id);
         }
-        log.warn("dict {},id {}", dict, id);
         if (id != 0) {
             if (dict.getFlag() == 0) {
                 List<TreeVo> subTasks = taskDao.listTree(id, null, 1);
@@ -52,7 +51,6 @@ public class TaskBizImpl implements TaskBiz {
                 result.put("task", subTasks);
             } else {
                 TreeVo treeVo = taskDao.getTreeById(dict.getTaskId(), null);
-                log.warn("treeVo {}", treeVo);
                 dict.setTaskId(id);
                 List<TreeVo> subTasks = taskDao.listTree(0, Integer.valueOf(treeVo.getId()), treeVo.getLevel() + 1);
                 if (subTasks.size() == 0) {
@@ -74,7 +72,6 @@ public class TaskBizImpl implements TaskBiz {
         Map result = new HashMap();
         if (id != 0) {
             CommonTree commonTree = taskDao.getCommonTreeById(id);
-            log.warn("treeVo {}", commonTree);
             List<CommonTree> subTree = taskDao.listCommonTree(commonTree.getId(), commonTree.getLevel() + 1);
             if (subTree.size() == 0) {
                 subTree.add(commonTree);
@@ -113,7 +110,6 @@ public class TaskBizImpl implements TaskBiz {
     public void buildTree(SearchDict dict, List<TreeVo> subTasks, int type) {
         List<TaskInfo> taskInfo;
         for (TreeVo vo : subTasks) {
-            log.warn("buildTree {} type {}", vo, type);
             if (type == 0) {
                 dict.setProjectId(vo.getProjectId());
                 taskInfo = taskDao.queryTaskInfo(dict);
@@ -131,7 +127,6 @@ public class TaskBizImpl implements TaskBiz {
 
     public void buildTree(List<CommonTree> subTree) {
         for (CommonTree commonTree : subTree) {
-            log.warn("commonTree {}", commonTree);
             commonTree.setParent(haveSub(commonTree));
         }
     }

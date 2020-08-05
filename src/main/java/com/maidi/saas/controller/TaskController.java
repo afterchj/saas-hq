@@ -10,11 +10,9 @@ import com.maidi.saas.service.TaskService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.PathParam;
 import java.util.*;
 
 /**
@@ -125,6 +123,7 @@ public class TaskController extends BaseController {
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
         List<TaskQuery> taskVoList = taskService.queryTask(dict);
+        log.warn("TaskQueryList {}", taskVoList);
         result.put("data", taskVoList);
         return result;
     }
@@ -144,7 +143,7 @@ public class TaskController extends BaseController {
     @ApiOperation(value = "获取任务回复列表", notes = "根据任务id返回任务回复详情")
     @RequestMapping(value = "/listCommentById", method = RequestMethod.GET)
     public Map listComment(int id) {
-        log.warn("queryTaskInfo {}", id);
+        log.warn("listComment {}", id);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
