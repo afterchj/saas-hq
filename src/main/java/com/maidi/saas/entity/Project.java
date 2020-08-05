@@ -16,6 +16,8 @@ import java.util.List;
 public class Project extends BaseEntity {
     @Column(columnDefinition = "tinyint default 0")
     private Integer level;
+    @Column(columnDefinition = "tinyint default 1")
+    private Integer type;
     private Integer sequence;
     private String bdId;
     private String managerId;

@@ -78,6 +78,7 @@
             <if test="stageId!=null and stageId!=''">
                 AND s.id LIKE CONCAT('%',#{stageId},'%')
             </if>
+            AND p.type=1
         </where>
     </select>
 
@@ -96,6 +97,7 @@
             plan_end_time,
             actual_start_time,
             actual_end_time,
+            type,
             create_time,
             update_time
            )
@@ -104,7 +106,7 @@
         #{extFields},#{projectManagerId},#{customerId},
         #{projectBDId},#{projectStageId},#{projectTypeId},
         #{planStartTime},#{planEndTime},#{actualStartTime},
-        #{actualEndTime},now(),now()
+        #{actualEndTime},#{type},now(),now()
        )
     </insert>
 

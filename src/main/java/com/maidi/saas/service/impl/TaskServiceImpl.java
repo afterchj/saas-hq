@@ -62,7 +62,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public int save(TaskVo taskVo) {
-        return taskDao.saveTask(taskVo);
+        taskDao.saveTask(taskVo);
+        return taskVo.getId();
     }
 
     @Override

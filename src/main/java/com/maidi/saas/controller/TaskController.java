@@ -1,5 +1,6 @@
 package com.maidi.saas.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.maidi.saas.biz.TaskBiz;
 import com.maidi.saas.entity.dd.ResultDict;
 import com.maidi.saas.entity.dd.SearchDict;
@@ -76,11 +77,14 @@ public class TaskController extends BaseController {
 
     @ApiOperation(value = "新增任务", notes = "新增任务分解功能", produces = "application/json")
     @RequestMapping(value = "/addTask", method = RequestMethod.POST)
-    public Map addTask(@RequestBody(required = false) TaskVo taskVo) {
+    public Map addTask(@RequestBody(required = false) String params) {
+        log.warn("params {}", params);
+        TaskVo taskVo = JSON.parseObject(params, TaskVo.class);
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-        taskService.save(taskVo);
+        int id = taskService.save(taskVo);
+        result.put("id", id);
         return result;
     }
 
@@ -277,6 +281,7 @@ public class TaskController extends BaseController {
         taskService.deleteTaskById(id);
         return result;
     }
+
     @RequestMapping(value = "/deleteSheetById", method = RequestMethod.GET)
     public Map deleteSheetById(int id) {
         log.warn("id {}", id);

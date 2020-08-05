@@ -125,7 +125,7 @@ public class ProjectController extends BaseController {
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
         int id = projectService.save(projectVo);
-        log.warn("id {}", id);
+        result.put("id", id);
         return result;
     }
 

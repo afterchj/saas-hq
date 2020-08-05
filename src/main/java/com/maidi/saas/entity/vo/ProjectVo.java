@@ -15,6 +15,7 @@ import java.util.Date;
 @Data
 public class ProjectVo extends BaseVo {
 
+    private Integer type = 1;
     private Integer sequence;
     private String projectName;
     private String projectCode;
