@@ -137,10 +137,10 @@
             plan_start_time planStartTime,
             plan_end_time planEndTime
         FROM sm_task t
-		INNER JOIN sm_stage s ON s.id=t.stage
-		INNER JOIN sm_user u ON u.id=t.principal
-		INNER JOIN sm_priority p ON p.id =t.priority
-		INNER JOIN sm_timesheet ts ON ts.id=t.time_sheet
+		LEFT JOIN sm_stage s ON s.id=t.stage
+		LEFT JOIN sm_user u ON u.id=t.principal
+		LEFT JOIN sm_priority p ON p.id =t.priority
+		LEFT JOIN sm_timesheet ts ON ts.id=t.time_sheet
 		WHERE t.id=#{id}
     </select>
 
