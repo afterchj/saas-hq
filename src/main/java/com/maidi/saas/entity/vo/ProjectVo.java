@@ -30,5 +30,7 @@ public class ProjectVo extends BaseVo {
     private String projectManagerId;
     private String projectTypeId;
     private String customerId;
+    private String planCycle="";
+    private String actualCycle="";
 
 }
