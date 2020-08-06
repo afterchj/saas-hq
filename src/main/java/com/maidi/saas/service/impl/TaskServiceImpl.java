@@ -70,7 +70,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public int saveTaskComment(TaskCommentVo commentVo) {
-        return taskDao.saveTaskComment(commentVo);
+        taskDao.saveTaskComment(commentVo);
+        return commentVo.getId();
     }
 
     @Override

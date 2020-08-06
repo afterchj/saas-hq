@@ -117,21 +117,31 @@
     </select>
 
     <select id="getTaskById" resultType="TaskVo" parameterType="int">
-        SELECT
-           id,
-           flag,
-           stage,
-           description,
-           percentage,
-           principal,
-           priority,
-           workload,
-           name taskName,
-           time_sheet timeSheet,
-           CONCAT_WS('/',LEFT(plan_start_time,10),LEFT(plan_end_time,10)) planCycle,
-           plan_start_time planStartTime,
-           plan_end_time planEndTime
-        FROM sm_task WHERE id=#{id}
+       SELECT
+            t.id,
+            s.id stageId,
+            s.name stage,
+            u.id principalId,
+            u.name principal,
+            p.id priorityId,
+            p.name priority,
+            ts.id timeSheetId,
+			ts.labor_hour timeSheet,
+            t.flag,
+            description,
+            percentage,
+            workload,
+            t.NAME taskName,
+            time_sheet timeSheet,
+            CONCAT_WS(	'/',LEFT ( plan_start_time, 10 ),LEFT ( plan_end_time, 10 )) planCycle,
+            plan_start_time planStartTime,
+            plan_end_time planEndTime
+        FROM sm_task t
+		INNER JOIN sm_stage s ON s.id=t.stage
+		INNER JOIN sm_user u ON u.id=t.principal
+		INNER JOIN sm_priority p ON p.id =t.priority
+		INNER JOIN sm_timesheet ts ON ts.id=t.time_sheet
+		WHERE t.id=#{id}
     </select>
 
     <select id="queryTaskInfo" resultType="TaskInfo" parameterType="SearchDict">
@@ -247,7 +257,7 @@
         WHERE id=#{id}
     </update>
 
-    <insert id="saveTaskComment" parameterType="TaskCommentVo">
+    <insert id="saveTaskComment" parameterType="TaskCommentVo" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO sm_task_comment (task_id,operator,notes,complete_rate) VALUES (#{taskId},#{operator},#{notes},#{completeRate})
     </insert>
 

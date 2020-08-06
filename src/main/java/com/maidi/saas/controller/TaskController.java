@@ -98,11 +98,12 @@ public class TaskController extends BaseController {
 
     @ApiOperation(value = "回复任务", notes = "回复任务务完成详情")
     @RequestMapping(value = "/reply", method = RequestMethod.POST)
-    public Map reply(@RequestBody(required = false) TaskCommentVo commentVo) {
+    public Map reply(@RequestBody(required = false) String params) {
         Map result = new HashMap();
+        TaskCommentVo commentVo = JSON.parseObject(params, TaskCommentVo.class);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-        taskService.saveTaskComment(commentVo);
+        int id = taskService.saveTaskComment(commentVo);
         return result;
     }
 

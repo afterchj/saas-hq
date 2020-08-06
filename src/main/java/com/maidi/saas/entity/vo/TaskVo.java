@@ -22,14 +22,18 @@ public class TaskVo extends BaseVo {
     private Boolean isParent;
     private String taskName;
     private String stage;
+    private String stageId;
     private String timeSheet;
+    private String timeSheetId;
     private String workload;
     private String principal;
+    private String principalId;
     private String priority;
+    private String priorityId;
     private String description;
     private String percentage;
     private String planCycle;
-    private Date planStartTime;
-    private Date planEndTime;
+    private String planStartTime;
+    private String planEndTime;
 
 }

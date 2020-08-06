@@ -16,6 +16,7 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"handler"})
 public class BaseVo {
     private int id;
-    private Date createTime;
-    private Date updateTime;
+    private String createTime;
+    private String updateTime;
+    private String other;
 }
