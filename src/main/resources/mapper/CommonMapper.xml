@@ -13,13 +13,14 @@
     </select>
 
     <insert id="insertUser" parameterType="list">
-        INSERT IGNORE INTO sm_user(id,name) VALUES
+        TRUNCATE TABLE sm_user;
+        INSERT INTO sm_user(id,name) VALUES
         <foreach collection="list" item="u" index="index" separator=",">
             (#{u.id},#{u.username})
         </foreach>
     </insert>
     <insert id="insertDict" parameterType="map">
-        INSERT IGNORE INTO sm_dict(id,name,type) VALUES
+        REPLACE INTO sm_dict(id,name,type) VALUES
         <if test="type==1">
             <foreach collection="list" item="u" index="index" separator=",">
                 (#{u.dictionary_number},#{u.dictionary_name},1)
