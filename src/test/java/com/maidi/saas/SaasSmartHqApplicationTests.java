@@ -57,14 +57,12 @@ public class SaasSmartHqApplicationTests {
 
     @Test
     public void testPush() {
-        OptionDict dict=new OptionDict();
+        OptionDict dict = new OptionDict();
         dict.setId(1);
         dict.setName("小陈");
-
         Map map = new HashMap();
         map.put("id", 1);
         map.put("name", "测试1");
-
         redisTemplate.convertAndSend("demo_topic", dict);
     }
 
@@ -96,13 +94,14 @@ public class SaasSmartHqApplicationTests {
     public void testOption() {
         String result = zuulUserService.getAllUser();
         JSONObject jsonObject = JSONObject.parseObject(result);
+        System.out.println("result = " + jsonObject);
         String data = jsonObject.getString("data");
         List<UserVo> items = JSON.parseArray(data, UserVo.class);
         Map params = new HashMap();
         params.put("list", items);
-        commonService.insertUsers(params);
-        System.out.println(data);
-        System.out.println(JSONObject.toJSONString(items));
+//        commonService.insertUsers(params);
+//        System.out.println(data);
+        System.out.println("items = " + JSONObject.toJSONString(items));
     }
 
     @Test
