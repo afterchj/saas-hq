@@ -15,7 +15,7 @@ public class TaskRecordVo extends BaseVo {
     private String content;
     private String completeRate;
     private int isVenture;
-    private int isAdjourn;
+    private int isDelay;
     private int ventureType;
     private int status;
     private String delayCause;

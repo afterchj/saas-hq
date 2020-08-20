@@ -13,11 +13,12 @@ import lombok.Data;
 public class SearchDict {
     private String id = "0";
     private int projectId;
+    private int productId;
     private int parentId;
     private int stageId;
     private int taskId;
     private int flag;
-    private int level = 1;
+    private int level;
     private String name;
     private String projectCode;
     private String principal;

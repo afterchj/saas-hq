@@ -4,6 +4,7 @@ package com.maidi.saas.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @Classname TaskRecord
@@ -22,10 +23,11 @@ public class TaskRecord extends BaseEntity {
     @Column(columnDefinition = "bit default 0")
     private boolean isVenture;
     @Column(columnDefinition = "bit default 0")
-    private boolean isAdjourn;
+    private boolean isDelay;
     @Column(columnDefinition = "tinyint default 1")
     private Integer ventureType;
     @Column(columnDefinition = "text")
     private String delayCause;
-
+    private Date delayStartTime;
+    private Date delayEndTime;
 }

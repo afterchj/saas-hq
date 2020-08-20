@@ -18,7 +18,10 @@ public class TreeVo {
     private String name;
     private int level = 1;
     private int projectId;
+    private int productId;
+    private int taskId;
     private Integer parentId;
     private boolean isParent;
     private List<TaskInfo> taskInfo;
+    private List<TreeVo> subTree;
 }
