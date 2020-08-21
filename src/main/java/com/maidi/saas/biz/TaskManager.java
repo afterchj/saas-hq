@@ -1,6 +1,7 @@
 package com.maidi.saas.biz;
 
 import com.maidi.saas.entity.dd.SearchDict;
+import com.maidi.saas.entity.vo.CommonTaskVo;
 
 import java.util.Map;
 
@@ -15,4 +16,6 @@ public interface TaskManager {
     Map tree();
 
     Map subtree(SearchDict dict);
+
+    Map taskInfo(int id, int type);
 }

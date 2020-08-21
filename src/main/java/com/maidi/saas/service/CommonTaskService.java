@@ -1,4 +1,4 @@
-package com.maidi.saas.dao;
+package com.maidi.saas.service;
 
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.*;
@@ -13,7 +13,13 @@ import java.util.Map;
  * @Date 2020/6/18 14:39
  * @Created by hjchen
  */
-public interface CommonTaskDao {
+public interface CommonTaskService {
+
+    Map tree();
+
+    Map subtree(SearchDict dict);
+
+    Map taskInfo(int id, int type);
 
     List<TimeSheetVo> getTimeSheet();
 
@@ -37,13 +43,10 @@ public interface CommonTaskDao {
 
     List<TaskCommentVo> getTaskListById(int id);
 
-    CommonTaskVo getTaskById(int id);
-
-    TaskGroupVo getTaskGroupById(int id);
-
     List<TaskInfo> queryTaskInfo(SearchDict dict);
 
     void saveTimeSheet(TimeSheetVo sheetVo);
+
 
     List<TaskQuery> queryTask(SearchDict dict);
 
@@ -51,11 +54,7 @@ public interface CommonTaskDao {
 
     void updateStatus(Map map);
 
-    void saveTask(CommonTaskVo taskVo);
-
-    void saveTaskGroup(TaskGroupVo groupVo);
-
-    void saveProduct(ProductVo productVo);
+    int saveTask(CommonTaskVo taskVo);
 
     int saveTaskComment(TaskCommentVo commentVo);
 
@@ -72,4 +71,8 @@ public interface CommonTaskDao {
     void deleteSheetById(int id);
 
     void modifyProduct(ProductVo productVo);
+
+    int saveProduct(ProductVo productVo);
+
+    int saveTaskGroup(TaskGroupVo groupVo);
 }

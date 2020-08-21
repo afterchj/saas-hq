@@ -16,7 +16,6 @@ import java.util.Date;
 @Table(name = "sm_common_task")
 public class GuestTask extends BaseEntity {
     private Integer projectId;
-    private Integer productId;
     @Column(columnDefinition = "int default 0", nullable = false)
     private Integer parentId;
     private Integer level;
@@ -53,9 +52,11 @@ public class GuestTask extends BaseEntity {
     private Date actualEndTime;
     @Column(columnDefinition = "tinyint default 1")
     private Integer outputType;
-    @Column(columnDefinition = "tinyint default 1")
+    @Column(columnDefinition = "tinyint default 0")
     private Integer status;
     @Column(columnDefinition = "tinyint default 1")
     private Integer flag;
+    @Column(columnDefinition = "tinyint default 1")
+    private Integer type;
 
 }

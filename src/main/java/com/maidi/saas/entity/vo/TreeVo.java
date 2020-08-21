@@ -3,7 +3,6 @@ package com.maidi.saas.entity.vo;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Classname TreeVo
@@ -16,9 +15,9 @@ public class TreeVo {
 
     private String id;
     private String name;
-    private int level = 1;
+    private int level;
+    private int type;
     private int projectId;
-    private int productId;
     private int taskId;
     private Integer parentId;
     private boolean isParent;

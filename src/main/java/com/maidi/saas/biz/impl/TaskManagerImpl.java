@@ -3,6 +3,8 @@ package com.maidi.saas.biz.impl;
 import com.maidi.saas.biz.TaskManager;
 import com.maidi.saas.dao.CommonTaskDao;
 import com.maidi.saas.entity.dd.SearchDict;
+import com.maidi.saas.entity.vo.CommonTaskVo;
+import com.maidi.saas.entity.vo.TaskGroupVo;
 import com.maidi.saas.entity.vo.TreeVo;
 import com.maidi.saas.utils.IdUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +34,10 @@ public class TaskManagerImpl implements TaskManager {
     public Map tree() {
         Map result = new HashMap();
         List<TreeVo> projects = commonTaskDao.getProjects(0);
-        List<TreeVo> subTasks;
-        SearchDict dict = new SearchDict();
         for (TreeVo treeVo : projects) {
+            SearchDict dict = new SearchDict();
             dict.setProjectId(treeVo.getProjectId());
-            subTasks = commonTaskDao.listTree(dict);
+            List<TreeVo> subTasks = commonTaskDao.listTree(dict);
             if (subTasks.size() > 0) {
                 treeVo.setSubTree(subTasks);
                 treeVo.setParent(true);
@@ -138,5 +139,18 @@ public class TaskManagerImpl implements TaskManager {
             subTask = commonTaskDao.listProduct(dict);
         }
         return subTask;
+    }
+
+    @Override
+    public Map taskInfo(int id, int type) {
+        Map data = new HashMap();
+        if (type == 2) {
+            TaskGroupVo groupVo = commonTaskDao.getTaskGroupById(id);
+            data.put("data", groupVo);
+        } else {
+            CommonTaskVo commonTaskVo = commonTaskDao.getTaskById(id);
+            data.put("data", commonTaskVo);
+        }
+        return data;
     }
 }

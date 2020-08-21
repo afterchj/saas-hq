@@ -41,7 +41,7 @@ public class Product extends BaseEntity {
     private Date planEndTime;
      private Date actualStartTime;
     private Date actualEndTime;
-    @Column(columnDefinition = "tinyint default 1")
+    @Column(columnDefinition = "tinyint default 2")
     private Integer flag;
     @Column(columnDefinition = "tinyint default 1")
     private Integer facadeId;
