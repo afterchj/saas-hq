@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maidi.saas.dao.ProductDao">
+    <!--附件打包-->
+    <insert id="filePackage">
+        INSERT INTO product_file
+        ( taskId, packageName,barcode,fileNum,files,`describe`,version, created,createdTime)
+        VALUES
+        ( #{taskId}, #{packageName},#{barcode} ,#{fileNum},#{files},#{describe},#{version}, #{created},now());
+    </insert>
+
+    <!--任务流转-->
+    <insert id="taskRoam" parameterType="com.maidi.saas.entity.ProductTaskEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO product_task
+        ( infoId,modularCode,taskFrom, `describe`,taskInfo,receiver,taskType,enclosure,created_by,created_time)
+        VALUES
+        ( #{infoId},#{modularCode},#{taskFrom}, #{describe},#{taskInfo} ,#{receiver},#{taskType},#{enclosure},#{created_by},now());
+    </insert>
+
+    <!--获取附件打包详情-->
+    <select id="getFilePackageDetail" resultType="com.maidi.saas.entity.vo.FilePackageInfoEntity" flushCache="true">
+        SELECT
+            pf.id,
+            pf.taskId,
+            pf.barcode,
+            pf.`describe`,
+            pf.fileNum,
+            pf.packageName,
+            pf.version,
+            pf.created,
+            DATE_FORMAT( pf.createdTime, '%Y-%m-%d %H:%i:%s' ) AS createdTime,
+            sct.`name` AS taskName
+        FROM
+            `product_file` pf
+            LEFT JOIN sm_common_task sct ON sct.id = pf.taskId
+        WHERE
+            pf.taskId = 1
+        ORDER BY
+            pf.createdTime DESC
+        LIMIT 0,1
+    </select>
+
+    <!--查询最大版本号-->
+    <select id="getMaxVersion" resultType="java.lang.String">
+        SELECT
+            MAX( version )
+        FROM
+            `product_file`
+        WHERE
+            taskId =#{id}
+    </select>
+
+    <!--查询版本号-->
+    <select id="getVersion" resultType="java.lang.String">
+        SELECT
+            MAX( version )
+        FROM
+            product_version
+        WHERE
+            taskId =#{taskId}
+    </select>
+
+    <!--生成版本号-->
+    <insert id="creatVersion">
+        INSERT INTO product_version
+        ( taskId, newTaskName,oldTaskName,version,isContain,`describe`, created,createdTime)
+        VALUES
+        ( #{taskId}, #{newTaskName},#{oldTaskName} ,#{version},#{isContain},#{describe}, #{created},now());
+    </insert>
+
+    <!--统计子任务-->
+    <select id="getSonTask" resultType="java.lang.Long">
+        SELECT
+            id
+        FROM
+            sm_common_task
+        WHERE parent_id=#{id}
+    </select>
+
+    <!--生成一套新任务节点-->
+    <insert id="insertTask" parameterType="com.maidi.saas.entity.TaskEntity" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO sm_common_task (
+            `name`,
+            project_id,
+            parent_id,
+            `level`,
+            description,
+            designer,
+            digest,
+            flag,
+            imprint,
+            output,
+            output_type,
+            percentage,
+            plan_end_time,
+            plan_start_time,
+            proofreader,
+            `status`,
+            verifier,
+            version,
+            builder,
+            `code`,
+            principal,
+            sources,
+            other,
+            actual_start_time,
+            actual_end_time,
+            create_time,
+            update_time,
+            type
+        ) SELECT
+          #{name},
+          project_id,
+          parent_id,
+          `level`,
+          description,
+          designer,
+          digest,
+          flag,
+          imprint,
+          output,
+          output_type,
+          percentage,
+          plan_end_time,
+          plan_start_time,
+          proofreader,
+          `status`,
+          verifier,
+          #{version},
+          builder,
+          `code`,
+          principal,
+          sources,
+          other,
+          actual_start_time,
+          actual_end_time,
+          create_time,
+          update_time,
+          type
+          FROM
+              sm_common_task
+          WHERE
+              id = #{id}
+    </insert>
+</mapper>
