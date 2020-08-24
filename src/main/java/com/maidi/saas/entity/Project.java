@@ -35,6 +35,8 @@ public class Project extends BaseEntity {
     private String extFields;
     @Column(columnDefinition = "text")
     private String description;
+    @Column(columnDefinition = "tinyint default 0")
+    private Integer flag;
 
 
 //    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

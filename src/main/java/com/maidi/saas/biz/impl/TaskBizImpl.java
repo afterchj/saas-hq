@@ -6,6 +6,7 @@ import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.CommonTree;
 import com.maidi.saas.entity.vo.TaskInfo;
 import com.maidi.saas.entity.vo.TreeVo;
+import com.maidi.saas.utils.IdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,7 @@ public class TaskBizImpl implements TaskBiz {
     public Map treeMap(SearchDict dict) {
         Map result = new HashMap();
         String str = dict.getId();
-        int id = 0;
-        if (StringUtils.isNotBlank(str)) {
-            if (str.contains("_")) {
-                id = Integer.parseInt(str.substring(str.lastIndexOf("_") + 1, str.length()));
-            } else {
-                id = Integer.parseInt(str);
-            }
-        }
+        int id = IdUtil.paresId(str);
         dict.setId(String.valueOf(id));
         if (dict.getFlag() == 0) {
             dict.setProjectId(id);

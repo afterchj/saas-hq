@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.maidi.saas.dao.CommonTaskDao">
+
+    <resultMap type="TaskQuery" id="taskMap">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="planCycle" property="planCycle"/>
+        <result column="principal" property="principal"/>
+        <result column="percentage" property="percentage"/>
+        <result column="description" property="description"/>
+        <result column="create_time" property="createTime"/>
+        <collection property="content" select="getTaskListById" column="id" fetchType="lazy"/>
+    </resultMap>
+
+    <sql id="task_column_list">
+        t.id,
+        t.name,
+        code,
+        version,
+        imprint,
+        digest,
+        percentage,
+        flag,
+        type,
+        output,
+        level,
+        status,
+        description,
+        u.name proofreader,
+        d.name designer,
+        v.name verifier,
+        project_id projectId,
+        parent_id parentId,
+        designer designerId,
+        verifier verifierId,
+        proofreader proofreaderId,
+        output_type outputType,
+        plan_start_time planStartTime,
+        plan_end_time planEndTime,
+        actual_start_time actualStartTime,
+        actual_end_time actualEndTime,
+        CONCAT_WS('/',LEFT(t.plan_start_time,10),LEFT(t.plan_end_time,10)) planCycle,
+        CONCAT_WS('/',LEFT(t.actual_start_time,10),LEFT(t.actual_end_time,10)) actualCycle
+    </sql>
+
+    <sql id="group_column_list">
+        t.id,
+        t.name,
+        code,
+        sources,
+        version,
+        imprint,
+        digest,
+        flag,
+        type,
+        level,
+        description,
+        p.name principal,
+        b.name builder,
+        project_id projectId,
+        parent_id parentId,
+        principal principalId,
+        builder builderId,
+        actual_start_time actualStartTime,
+        actual_end_time actualEndTime,
+        CONCAT_WS('/',LEFT(t.actual_start_time,10),LEFT(t.actual_end_time,10)) actualCycle
+    </sql>
+
+    <sql id="tree_column_list">
+        id,type,name,level,project_id projectId,parent_id parentId
+    </sql>
+
+    <select id="getProjects" resultType="TreeVo" parameterType="int">
+        SELECT id,name,level,id projectId FROM sm_project
+        <where>
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getProductById" resultType="ProductVo" parameterType="int">
+        SELECT
+        id,
+        code,
+        level,
+        number,
+        texture,
+        weight,
+        version,
+        imprint,
+        description,
+        specification,
+        task_id taskId,
+        parent_id parentId,
+        name productName,
+        serial_num serialNum,
+        standard_num standardNum,
+        available_num availableNum,
+        plan_start_time planStartTime,
+        plan_end_time planEndTime,
+        actual_start_time actualStartTime,
+        actual_end_time actualEndTime,
+        CONCAT_WS('/',LEFT(p.plan_start_time,10),LEFT(p.plan_end_time,10)) planCycle,
+        CONCAT_WS('/',LEFT(p.actual_start_time,10),LEFT(p.actual_end_time,10)) actualCycle,
+        facade_id facadeId,
+        outsource_id outsourceId,
+        supply_id supplyId,
+        out_supply_id outSupplyId,
+        create_time createTime
+        FROM sm_product p
+        <where>
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getTreeById" resultType="TreeVo" parameterType="SearchDict">
+        SELECT
+        <include refid="tree_column_list"/>
+        FROM sm_common_task
+        <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
+        <where>
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="taskId!=null and taskId!=''">
+                and id=#{taskId}
+            </if>
+            <if test="projectId!=null and projectId!=''">
+                and project_id=#{projectId}
+            </if>
+        </where>
+    </select>
+
+    <select id="listTree" resultType="TreeVo" parameterType="SearchDict">
+        SELECT
+        <include refid="tree_column_list"/>
+        FROM sm_common_task
+        <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
+        <where>
+            <if test="projectId!=null and projectId!=''">
+                and project_id=#{projectId}
+            </if>
+            <if test="parentId!=null and parentId!=''">
+                and parent_id=#{parentId}
+            </if>
+            <if test="level!=null and level!=''">
+                and level =#{level}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="listProduct" resultType="TreeVo" parameterType="SearchDict">
+        SELECT id,name,level,task_id taskId,parent_id parentId FROM sm_product
+        <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
+        <where>
+            <if test="taskId!=null and taskId!=''">
+                and task_id=#{taskId}
+            </if>
+            <if test="parentId!=null and parentId!=''">
+                and parent_id=#{parentId}
+            </if>
+            <if test="level!=null and level!=''">
+                and level =#{level}
+            </if>
+        </where>
+    </select>
+
+    <select id="listCommonTree" resultType="CommonTree" parameterType="int">
+        SELECT id,name,level,parent_id parentId FROM sm_timesheet
+        <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
+        <where>
+            <if test="parentId!=null and parentId!=''">
+                and parent_id=#{parentId}
+            </if>
+            <if test="level!=null and level!=''">
+                and level =#{level}
+            </if>
+        </where>
+    </select>
+
+    <select id="getCommonTreeById" resultType="CommonTree" parameterType="int">
+        SELECT id,name,level,parent_id parentId FROM sm_timesheet
+        <where>
+            <if test="id!=null and id!=''">
+                AND id=#{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTimeSheet" resultType="TimeSheetVo">
+        SELECT id,labor_hour laborHour FROM sm_timesheet
+    </select>
+
+    <select id="getTimeSheetById" resultType="TimeSheetVo" parameterType="int">
+        SELECT id,name laborName,labor_hour laborHour,flag,level,parent_id parentId FROM sm_timesheet
+        <where>
+            <if test="id!=null and id!=''">
+                AND id=#{id}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getTaskListById" resultType="TaskCommentVo" parameterType="int">
+        SELECT id,complete_rate completeRate,operator,notes,create_time createTime FROM sm_task_comment where task_id=#{id}
+    </select>
+
+    <select id="getTaskById" resultType="CommonTaskVo" parameterType="int">
+        SELECT
+        <include refid="task_column_list"/>
+        FROM sm_common_task t
+        LEFT JOIN sm_user d ON d.id=t.designer
+        LEFT JOIN sm_user u ON u.id=t.proofreader
+        LEFT JOIN sm_user v ON v.id=t.verifier
+        WHERE t.id=#{id}
+    </select>
+
+    <select id="getTaskGroupById" resultType="TaskGroupVo" parameterType="int">
+        SELECT
+        <include refid="group_column_list"/>
+        FROM sm_common_task t
+        LEFT JOIN sm_user p ON p.id=t.principal
+        LEFT JOIN sm_user b ON b.id=t.builder
+        WHERE t.id=#{id}
+    </select>
+
+    <select id="queryTaskInfo" resultType="TaskInfo" parameterType="SearchDict">
+        SELECT
+        c.id,
+        complete_rate percentage,
+        CONCAT_WS('/',SUBSTRING( t.plan_start_time, 6,5 ),SUBSTRING( t.plan_end_time, 6,5 )) planCycle,
+        t.principal
+        FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
+        <where>
+            <if test="projectId!=null and projectId!=''">
+                AND t.project_id=#{projectId} AND t.id=#{id}
+            </if>
+            <if test="taskId!=null and taskId!=''">
+                AND c.task_id=#{taskId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryTask" resultMap="taskMap" parameterType="SearchDict">
+        SELECT
+        <include refid="task_column_list"/>
+        FROM sm_task t
+        LEFT JOIN sm_task_comment c ON t.id=c.task_id
+        <where>
+            <if test="projectId!=null and projectId!=''">
+                AND t.project_id=#{projectId}
+            </if>
+            <if test="taskId!=null and taskId!=''">
+                AND t.id=#{taskId}
+            </if>
+            <if test="principal!=null and principal!=''">
+                AND c.operator LIKE CONCAT('%',#{principal},'%')
+            </if>
+            <if test="updateTime!=null and updateTime!=''">
+                AND t.update_time BETWEEN #{updateTime} AND NOW()
+            </if>
+        </where>
+        GROUP BY t.id
+    </select>
+    <select id="queryTaskLog" resultType="TaskLogVo" parameterType="SearchDict">
+        SELECT
+        l.id,
+        t.id taskId,
+        t.principal,
+        t.create_time createTime,
+        l.operator,
+        l.notes,
+        l.status,
+        l.update_time updateTime
+        FROM
+        sm_task t
+        INNER JOIN sm_task_log l ON t.id = l.task_id
+        <where>
+            <if test="principal!=null and principal!=''">
+                AND t.principal LIKE CONCAT('%',#{principal},'%')
+            </if>
+            <if test="updateTime!=null and updateTime!=''">
+                AND l.update_time BETWEEN #{updateTime} AND NOW()
+            </if>
+        </where>
+    </select>
+
+    <insert id="saveTask" parameterType="CommonTaskVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO sm_common_task (
+            project_id,
+            parent_id,
+            name,
+            level,
+            flag,
+            code,
+            version,
+            imprint,
+            digest,
+            percentage,
+            output,
+            output_type,
+            description,
+            designer,
+            verifier,
+            proofreader,
+            plan_start_time,
+            plan_end_time,
+            type,
+            status
+        )
+        VALUES (
+        #{projectId},#{parentId},#{name},#{level},#{flag},#{code},#{version},#{imprint},#{digest},#{percentage},#{output},#{outputType},#{description},#{designer},#{verifier},#{proofreader},#{planStartTime},#{planEndTime},#{type},#{status}
+        )
+    </insert>
+
+    <insert id="saveTaskGroup" parameterType="TaskGroupVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO sm_common_task (
+         	project_id,
+            parent_id,
+            name,
+            code,
+            level,
+            sources,
+            version,
+            imprint,
+            digest,
+            description,
+            principal,
+            builder,
+            type,
+            actual_start_time,
+            actual_end_time
+          )
+        VALUES (
+        #{projectId},#{parentId},#{name},#{code},#{level},#{sources},#{version},#{imprint},#{digest},#{description},#{principal},#{builder},#{type},#{actualStartTime},#{actualEndTime}
+        )
+    </insert>
+
+    <insert id="saveProduct" parameterType="ProductVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO sm_product (
+        task_id ,
+        parent_id ,
+        name ,
+        code,
+        level,
+        flag,
+        number,
+        texture,
+        weight,
+        version,
+        imprint,
+        description,
+        specification,
+        serial_num ,
+        standard_num ,
+        available_num ,
+        plan_start_time ,
+        plan_end_time ,
+        actual_start_time ,
+        actual_end_time ,
+        facade_id ,
+        outsource_id ,
+        supply_id ,
+        out_supply_id
+        )
+        VALUES (
+        #{taskId},#{parentId},#{productName},#{code},#{level},#{flag},#{number},
+        #{texture},#{weight},#{version},#{imprint},#{description},#{specification},
+        #{serialNum},#{standardNum},#{availableNum},#{planStartTime},
+        #{planEndTime},#{actualStartTime},#{actualEndTime},#{facadeId},
+        #{outsourceId},#{supplyId},#{outSupplyId}
+        )
+    </insert>
+
+    <update id="modifyProduct" parameterType="ProductVo">
+        UPDATE sm_product
+        <set>
+            update_time=now(),
+            <if test="productName != null">name=#{productName},</if>
+            <if test="texture != null">texture=#{texture},</if>
+            <if test="imprint != null">imprint=#{imprint},</if>
+            <if test="weight != null">weight=#{weight},</if>
+            <if test="number != null">number=#{number},</if>
+            <if test="serialNum != null">serial_num=#{serialNum},</if>
+            <if test="standardNum != null">standard_num=#{standardNum},</if>
+            <if test="availableNum != null">available_num=#{availableNum},</if>
+            <if test="facadeId != null">facade_id=#{facadeId},</if>
+            <if test="outsourceId != null">outsource_id=#{outsourceId},</if>
+            <if test="supplyId != null">supply_id=#{supplyId},</if>
+            <if test="outSupplyId != null">out_supply_id=#{outSupplyId},</if>
+            <if test="planStartTime != null">plan_start_time=#{planStartTime},</if>
+            <if test="planEndTime != null">plan_end_time=#{planEndTime},</if>
+            <if test="specification != null">specification=#{specification},</if>
+            <if test="description != null">description=#{description},</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <update id="updateTimeSheetById" parameterType="TimeSheetVo">
+        UPDATE sm_timesheet
+        <set>
+            update_time=now(),
+            <if test="laborName != null">name=#{laborName},</if>
+            <if test="laborHour != null">labor_hour=#{laborHour},</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <insert id="saveTaskComment" parameterType="TaskCommentVo" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO sm_task_comment (task_id,operator,notes,complete_rate) VALUES (#{taskId},#{operator},#{notes},#{completeRate})
+    </insert>
+
+    <update id="updateTaskComment" parameterType="TaskCommentVo">
+        UPDATE sm_task SET percentage=#{completeRate},description=#{notes},update_time=now() WHERE id=#{taskId}
+    </update>
+
+    <insert id="saveTaskLog" parameterType="TaskLogVo">
+        INSERT INTO sm_task_log (task_id,operator,notes,status) VALUES (#{taskId},#{operator},#{notes},#{status})
+    </insert>
+
+    <insert id="saveTimeSheet" parameterType="TimeSheetVo">
+        INSERT INTO sm_timesheet (name,labor_hour,parent_id,level,flag) VALUES (#{laborName},#{laborHour},#{parentId},#{level},#{flag})
+    </insert>
+
+    <insert id="saveTemplate" parameterType="TemplateVo">
+        INSERT INTO sm_template (project_id,name,notes,template_id,type_id) VALUES (#{projectId},#{templateName},#{notes},#{templateId},#{typeId})
+    </insert>
+
+    <select id="getType" parameterType="int" resultType="int">
+        SELECT type_id FROM sm_template
+        <where>
+            <if test="templateId !=null and templateId!=''">
+                AND id=#{templateId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteTaskById" parameterType="int">
+        DELETE FROM sm_task WHERE id=#{id}
+    </delete>
+
+    <delete id="deleteSheetById" parameterType="int">
+        DELETE FROM sm_timesheet WHERE id=#{id}
+    </delete>
+
+    <update id="updateStatus">
+        UPDATE sm_ecode SET operator_id=#{operatorId},status=#{status}, update_time=now() WHERE id IN
+        <foreach collection="list" index="index" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>
