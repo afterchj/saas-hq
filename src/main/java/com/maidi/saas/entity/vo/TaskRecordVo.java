@@ -19,7 +19,7 @@ public class TaskRecordVo extends BaseVo {
     private int ventureType;
     private int status;
     private String delayCause;
-    private String planStartTime;
-    private String planEndTime;
+    private String delayStartTime;
+    private String delayEndTime;
 
 }

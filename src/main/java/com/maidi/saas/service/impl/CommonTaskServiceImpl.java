@@ -159,8 +159,8 @@ public class CommonTaskServiceImpl implements CommonTaskService {
     }
 
     @Override
-    public void modifyProduct(ProductVo productVo) {
-        commonTaskDao.modifyProduct(productVo);
+    public void updateProduct(ProductVo productVo) {
+        commonTaskDao.updateProduct(productVo);
     }
 
     @Override
@@ -185,5 +185,26 @@ public class CommonTaskServiceImpl implements CommonTaskService {
         groupVo.setVersion(String.format("V_%s", LocalDate.now()));
         commonTaskDao.saveTaskGroup(groupVo);
         return groupVo.getId();
+    }
+
+    @Override
+    public int updateTask(Map params) {
+        return commonTaskDao.updateTask(params);
+    }
+
+    @Override
+    public int saveRecord(TaskRecordVo recordVo) {
+        return commonTaskDao.saveRecord(recordVo);
+    }
+
+    @Override
+    public int saveAttachment(AttachmentVo attachmentVo) {
+        commonTaskDao.saveAttachment(attachmentVo);
+        return attachmentVo.getId();
+    }
+
+    @Override
+    public List<AttachmentVo> getAttachmentList(int hostId) {
+        return commonTaskDao.getAttachmentList(hostId);
     }
 }

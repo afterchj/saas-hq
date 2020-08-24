@@ -70,9 +70,17 @@ public interface CommonTaskService {
 
     void deleteSheetById(int id);
 
-    void modifyProduct(ProductVo productVo);
+    void updateProduct(ProductVo productVo);
 
     int saveProduct(ProductVo productVo);
 
     int saveTaskGroup(TaskGroupVo groupVo);
+
+    int updateTask(Map params);
+
+    int saveRecord(TaskRecordVo recordVo);
+
+    int saveAttachment(AttachmentVo attachmentVo);
+
+    List<AttachmentVo> getAttachmentList(int hostId);
 }

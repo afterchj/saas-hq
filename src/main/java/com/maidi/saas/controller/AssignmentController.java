@@ -1,20 +1,21 @@
 package com.maidi.saas.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.maidi.saas.entity.Attachment;
 import com.maidi.saas.entity.dd.ResultDict;
 import com.maidi.saas.entity.dd.SearchDict;
-import com.maidi.saas.entity.vo.CommonTaskVo;
-import com.maidi.saas.entity.vo.ProductVo;
-import com.maidi.saas.entity.vo.TaskGroupVo;
+import com.maidi.saas.entity.vo.*;
 import com.maidi.saas.service.CommonTaskService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,15 +73,30 @@ public class AssignmentController extends BaseController {
     @RequestMapping(value = "/taskInfo", method = RequestMethod.GET)
     public Map getTaskInfo(Integer id, Integer type) {
         Map result = new HashMap();
-        if (id == null || type == null) {
-            result.put("code", ResultDict.PARAMS_BLANK.getCode());
-            result.put("msg", ResultDict.PARAMS_BLANK.getValue());
-            return result;
-        }
         Map data = commonTaskService.taskInfo(id, type);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
         result.putAll(data);
+        return result;
+    }
+
+    @ApiOperation(value = "修改产品任务", notes = "根据id修改产品任务")
+    @RequestMapping(value = "/modifyTask", method = RequestMethod.POST)
+    public Map modifyTask(@RequestBody(required = false) Map params) {
+        Map result = new HashMap();
+        log.warn("params {}", params);
+        commonTaskService.updateTask(params);
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        return result;
+    }
+
+    @RequestMapping(value = "/record", method = RequestMethod.POST)
+    public Map record(@RequestBody(required = false) TaskRecordVo recordVo) {
+        Map result = new HashMap();
+        commonTaskService.saveRecord(recordVo);
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
         return result;
     }
 
@@ -98,11 +114,6 @@ public class AssignmentController extends BaseController {
     @RequestMapping(value = "/productInfo", method = RequestMethod.GET)
     public Map productInfo(Integer id) {
         Map result = new HashMap();
-        if (id == null) {
-            result.put("code", ResultDict.PARAMS_BLANK.getCode());
-            result.put("msg", ResultDict.PARAMS_BLANK.getValue());
-            return result;
-        }
         ProductVo product = commonTaskService.getProductById(id);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
@@ -112,11 +123,31 @@ public class AssignmentController extends BaseController {
 
     @ApiOperation(value = "修改产品任务", notes = "根据id修改产品任务")
     @RequestMapping(value = "/modifyProduct", method = RequestMethod.POST)
-    public Map updateById(@RequestBody(required = false) ProductVo productVo) {
+    public Map modifyProduct(@RequestBody(required = false) ProductVo productVo) {
         Map result = new HashMap();
-        commonTaskService.modifyProduct(productVo);
+        commonTaskService.updateProduct(productVo);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
+        return result;
+    }
+
+    @PostMapping("/attachment")
+    public Map upload(@RequestBody(required = false) AttachmentVo attachmentVo) {
+        Map result = new HashMap();
+        int uploadId = commonTaskService.saveAttachment(attachmentVo);
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        return result;
+    }
+
+    @GetMapping("/attachmentList")
+    public Map listAttachment(Integer id) {
+        int hostId = id != null ? id : 0;
+        Map result = new HashMap();
+        result.put("code", ResultDict.SUCCESS.getCode());
+        result.put("msg", ResultDict.SUCCESS.getValue());
+        List<AttachmentVo> attachmentVos = commonTaskService.getAttachmentList(hostId);
+        result.put("data", attachmentVos);
         return result;
     }
 }

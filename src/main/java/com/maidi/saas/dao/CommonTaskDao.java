@@ -71,5 +71,13 @@ public interface CommonTaskDao {
 
     void deleteSheetById(int id);
 
-    void modifyProduct(ProductVo productVo);
+    void updateProduct(ProductVo productVo);
+
+    int updateTask(Map params);
+
+    int saveRecord(TaskRecordVo recordVo);
+
+    void saveAttachment(AttachmentVo attachmentVo);
+
+    List<AttachmentVo> getAttachmentList(int hostId);
 }

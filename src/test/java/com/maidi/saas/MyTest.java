@@ -1,7 +1,10 @@
 package com.maidi.saas;
 
+import com.alibaba.fastjson.JSON;
+import com.maidi.saas.entity.vo.TaskRecordVo;
 import com.maidi.saas.utils.PingYinUtil;
 import org.junit.Test;
+import sun.rmi.runtime.Log;
 
 import java.time.LocalDate;
 
@@ -11,10 +14,12 @@ import java.time.LocalDate;
  * @Date 2020/07/14 10:28
  * @Created by hjchen
  */
+
 public class MyTest {
 
     @Test
     public void testStr() {
+        System.out.println(JSON.toJSONString(new TaskRecordVo()));
         String str = "p_1";
         String suffix = str.substring(str.indexOf("_") + 1, str.length());
         System.out.println(suffix);
