@@ -65,6 +65,6 @@ oss:
     bucketName: qiyuan-2020
     fileHost: ssm
 #log打印格式
-logging:
-  pattern:
-    console: '%d - %p %c{1}:%L %m%n'
+#logging:
+#  pattern:
+#    console: '%d - %p %c{1}:%L %m%n'

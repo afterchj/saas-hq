@@ -1,11 +1,11 @@
 uploadPath: /mnt/
 server:
-  port: 8087
+  port: 8080
   servlet:
     context-path: /ssm
 logging:
   level:
-    com.maidi.saas: DEBUG
+    com.maidi.saas: info
 spring:
   profiles: demo
   datasource:

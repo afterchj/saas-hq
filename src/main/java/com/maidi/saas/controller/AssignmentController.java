@@ -1,7 +1,5 @@
 package com.maidi.saas.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.maidi.saas.entity.Attachment;
 import com.maidi.saas.entity.dd.ResultDict;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.*;
@@ -10,10 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
