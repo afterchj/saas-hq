@@ -193,8 +193,9 @@ public class CommonTaskServiceImpl implements CommonTaskService {
     }
 
     @Override
-    public int saveRecord(TaskRecordVo recordVo) {
-        return commonTaskDao.saveRecord(recordVo);
+    public void saveAndUpdateRecord(TaskRecordVo recordVo) {
+        commonTaskDao.saveRecord(recordVo);
+        commonTaskDao.saveUpdate(recordVo);
     }
 
     @Override

@@ -88,7 +88,7 @@ public class AssignmentController extends BaseController {
     @RequestMapping(value = "/record", method = RequestMethod.POST)
     public Map record(@RequestBody(required = false) TaskRecordVo recordVo) {
         Map result = new HashMap();
-        commonTaskService.saveRecord(recordVo);
+        commonTaskService.saveAndUpdateRecord(recordVo);
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
         return result;

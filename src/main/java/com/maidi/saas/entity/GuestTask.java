@@ -16,6 +16,7 @@ import java.util.Date;
 @Table(name = "sm_common_task")
 public class GuestTask extends BaseEntity {
     private Integer projectId;
+    private Integer productId;
     @Column(columnDefinition = "int default 0", nullable = false)
     private Integer parentId;
     private Integer level;

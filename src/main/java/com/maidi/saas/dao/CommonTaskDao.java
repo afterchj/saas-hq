@@ -27,6 +27,8 @@ public interface CommonTaskDao {
 
     List<TreeVo> listProduct(SearchDict dict);
 
+    List<TreeVo> listProductTask(SearchDict dict);
+
     TreeVo getTreeById(SearchDict dict);
 
     List<TreeVo> listTree(SearchDict dict);
@@ -76,6 +78,8 @@ public interface CommonTaskDao {
     int updateTask(Map params);
 
     int saveRecord(TaskRecordVo recordVo);
+
+    int saveUpdate(TaskRecordVo recordVo);
 
     void saveAttachment(AttachmentVo attachmentVo);
 

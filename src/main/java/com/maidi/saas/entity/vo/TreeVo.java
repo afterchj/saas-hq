@@ -2,6 +2,7 @@ package com.maidi.saas.entity.vo;
 
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,10 +16,12 @@ public class TreeVo {
 
     private String id;
     private String name;
+    private Integer flag;
     private int level;
     private int type;
-    private int projectId;
     private int taskId;
+    private int projectId;
+    private int productId;
     private Integer parentId;
     private boolean isParent;
     private List<TaskInfo> taskInfo;

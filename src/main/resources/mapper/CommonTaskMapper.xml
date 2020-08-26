@@ -68,11 +68,11 @@
     </sql>
 
     <sql id="tree_column_list">
-        id,type,name,level,project_id projectId,parent_id parentId
+        id,type,name,level,flag,project_id projectId,parent_id parentId
     </sql>
 
     <select id="getProjects" resultType="TreeVo" parameterType="int">
-        SELECT id,name,level,id projectId FROM sm_project
+        SELECT id,name,level,flag,id projectId FROM sm_project
         <where>
             <if test="id!=null and id!=''">
                 and id=#{id}
@@ -156,7 +156,7 @@
     </select>
 
     <select id="listProduct" resultType="TreeVo" parameterType="SearchDict">
-        SELECT id,name,level,task_id taskId,parent_id parentId FROM sm_product
+        SELECT id,name,level,flag,task_id taskId,parent_id parentId FROM sm_product
         <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
         <where>
             <if test="taskId!=null and taskId!=''">
@@ -170,6 +170,20 @@
             </if>
         </where>
     </select>
+
+    <select id="listProductTask" resultType="TreeVo" parameterType="SearchDict">
+        SELECT id,name,level,flag,id taskId,product_id productId,parent_id parentId FROM sm_common_task
+        <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
+        <where>
+            <if test="productId!=null and productId!=''">
+                and product_id=#{productId}
+            </if>
+            <if test="level!=null and level!=''">
+                and level =#{level}
+            </if>
+        </where>
+    </select>
+
 
     <select id="listCommonTree" resultType="CommonTree" parameterType="int">
         SELECT id,name,level,parent_id parentId FROM sm_timesheet
@@ -235,13 +249,10 @@
         complete_rate percentage,
         CONCAT_WS('/',SUBSTRING( t.plan_start_time, 6,5 ),SUBSTRING( t.plan_end_time, 6,5 )) planCycle,
         t.principal
-        FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
+        FROM sm_common_task t INNER JOIN sm_task_record c ON t.id=c.task_id
         <where>
-            <if test="projectId!=null and projectId!=''">
-                AND t.project_id=#{projectId} AND t.id=#{id}
-            </if>
-            <if test="taskId!=null and taskId!=''">
-                AND c.task_id=#{taskId}
+            <if test="id!=null and id!=''">
+                AND c.task_id=#{id}
             </if>
         </where>
     </select>
@@ -341,7 +352,7 @@
         )
     </insert>
 
-    <insert id="saveRecord" parameterType="TaskGroupVo" keyProperty="id" useGeneratedKeys="true">
+    <insert id="saveRecord" parameterType="TaskRecordVo" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO sm_task_record (
          	task_id,
             complete_rate,
@@ -354,9 +365,20 @@
             delay_cause
           )
         VALUES (
-        #{taskId},#{completeRate},#{content},#{isVenture},#{ventureType},#{isDelay},#{delayStartTime},#{delayEndTime},#{delayCause});
-        UPDATE sm_common_task SET  update_time=now(),percentage=(SELECT sum(complete_rate) FROM sm_task_record GROUP BY task_id),status=#{status} WHERE id=#{taskId};
+        #{taskId},#{completeRate},#{content},#{isVenture},#{ventureType},#{isDelay},#{delayStartTime},#{delayEndTime},#{delayCause})
     </insert>
+
+    <update id="saveUpdate" parameterType="TaskRecordVo">
+        UPDATE sm_common_task
+        <set>
+            update_time=now(),
+            <if test="status != null and status!=''">status=#{status},</if>
+            <if test="taskId != null and taskId!=''">percentage=(SELECT sum(complete_rate) FROM sm_task_record WHERE
+                task_id=#{taskId} GROUP BY task_id),
+            </if>
+        </set>
+        WHERE id=#{taskId};
+    </update>
 
     <insert id="saveAttachment" parameterType="AttachmentVo" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO sm_attachment (
@@ -379,18 +401,18 @@
 
     <select id="getAttachmentList" resultType="AttachmentVo" parameterType="int">
         SELECT
-            id,
-            code,
-            version,
-            owner,
-            file_name fileName,
-            version_type versionType,
-            file_type fileType,
-            is_check isCheck,
-            is_verify isVerify,
-            is_commit isCommit,
-            url,
-            create_time createTime
+        id,
+        code,
+        version,
+        owner,
+        file_name fileName,
+        version_type versionType,
+        file_type fileType,
+        is_check isCheck,
+        is_verify isVerify,
+        is_commit isCommit,
+        url,
+        create_time createTime
         FROM sm_attachment
         <where>
             <if test="hostId!=null and hostId!=''">

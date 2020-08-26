@@ -13,6 +13,7 @@ import lombok.Data;
 @Data
 public class CommonTaskVo extends BaseVo {
     private Integer projectId;
+    private Integer productId;
     private Integer parentId;
     private Integer level;
     private String name;

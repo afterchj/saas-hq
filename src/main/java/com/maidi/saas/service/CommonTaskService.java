@@ -78,7 +78,7 @@ public interface CommonTaskService {
 
     int updateTask(Map params);
 
-    int saveRecord(TaskRecordVo recordVo);
+    void saveAndUpdateRecord(TaskRecordVo recordVo);
 
     int saveAttachment(AttachmentVo attachmentVo);
 

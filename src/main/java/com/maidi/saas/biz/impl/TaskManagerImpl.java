@@ -5,6 +5,7 @@ import com.maidi.saas.dao.CommonTaskDao;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.CommonTaskVo;
 import com.maidi.saas.entity.vo.TaskGroupVo;
+import com.maidi.saas.entity.vo.TaskInfo;
 import com.maidi.saas.entity.vo.TreeVo;
 import com.maidi.saas.utils.IdUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class TaskManagerImpl implements TaskManager {
             dict.setProjectId(treeVo.getProjectId());
             List<TreeVo> subTasks = commonTaskDao.listTree(dict);
             if (subTasks.size() > 0) {
-                treeVo.setSubTree(subTasks);
+//                treeVo.setSubTree(subTasks);//设置子树
                 treeVo.setParent(true);
                 buildTree(dict, subTasks, 0);
             }
@@ -68,10 +69,14 @@ public class TaskManagerImpl implements TaskManager {
                 subTask = skipLevel(subTask, treeVo, dict);
             }
             buildTree(dict, subTask, dict.getFlag());
-
         } else if (dict.getFlag() == 2) {
             dict.setParentId(id);
             subTask = commonTaskDao.listProduct(dict);
+            if (subTask.size() == 0) {
+                dict.setFlag(1);
+                dict.setProductId(Integer.parseInt(dict.getId()));
+                subTask = commonTaskDao.listProductTask(dict);
+            }
             buildTree(dict, subTask, dict.getFlag());
         }
         result.put("data", subTask);
@@ -80,15 +85,10 @@ public class TaskManagerImpl implements TaskManager {
     }
 
     public void buildTree(SearchDict dict, List<TreeVo> subTasks, int flag) {
-        int level;
         for (TreeVo vo : subTasks) {
-            level = vo.getLevel() + 1;
+            int level = vo.getLevel() + 1;
             if (flag == 0) {
                 dict.setProjectId(vo.getProjectId());
-            } else if (flag == 1) {
-                dict.setParentId(Integer.parseInt(vo.getId()));
-                dict.setProjectId(0);
-                dict.setTaskId(0);
             } else {
                 dict.setParentId(Integer.parseInt(vo.getId()));
                 dict.setProjectId(0);
@@ -100,6 +100,7 @@ public class TaskManagerImpl implements TaskManager {
     }
 
     private void nextLevel(SearchDict dict, TreeVo treeVo, int flag) {
+        List<TaskInfo> taskInfo = commonTaskDao.queryTaskInfo(dict);
         int level = dict.getLevel();
         List<TreeVo> subTask;
         if (flag == 1) {
@@ -110,6 +111,14 @@ public class TaskManagerImpl implements TaskManager {
             buildTree(dict, subTask, dict.getFlag());
         } else if (flag == 2) {
             subTask = commonTaskDao.listProduct(dict);
+            if (subTask.size() == 0) {
+                dict.setFlag(1);
+                dict.setProductId(Integer.parseInt(treeVo.getId()));
+                subTask = commonTaskDao.listProductTask(dict);
+                if (subTask.size() == 0) {
+                    subTask = commonTaskDao.listTree(dict);
+                }
+            }
         } else {
             dict.setParentId(Integer.parseInt(treeVo.getId()));
             dict.setProjectId(0);
@@ -122,7 +131,8 @@ public class TaskManagerImpl implements TaskManager {
                 subTask = commonTaskDao.listProduct(dict);
             }
         }
-        treeVo.setSubTree(subTask);
+        treeVo.setTaskInfo(taskInfo);
+//        treeVo.setSubTree(subTask);//设置子树
         dict.setLevel(level + 1);
         if (subTask.size() > 0) {
             treeVo.setParent(true);
@@ -131,12 +141,18 @@ public class TaskManagerImpl implements TaskManager {
     }
 
     public List<TreeVo> skipLevel(List<TreeVo> subTask, TreeVo treeVo, SearchDict dict) {
+        dict.setFlag(treeVo.getFlag());
         if (subTask.size() == 0) {
-            dict.setFlag(2);
+//            dict.setFlag(2);
             dict.setParentId(0);
             dict.setTaskId(Integer.parseInt(treeVo.getId()));
             treeVo.setParent(false);
             subTask = commonTaskDao.listProduct(dict);
+            if (subTask.size() == 0) {
+//                dict.setFlag(1);
+                dict.setProductId(Integer.parseInt(dict.getId()));
+                subTask = commonTaskDao.listProductTask(dict);
+            }
         }
         return subTask;
     }

@@ -152,11 +152,8 @@
         t.principal
         FROM sm_task t INNER JOIN sm_task_comment c ON t.id=c.task_id
         <where>
-            <if test="projectId!=null and projectId!=''">
-                AND t.project_id=#{projectId} AND t.id=#{id}
-            </if>
-            <if test="taskId!=null and taskId!=''">
-                AND c.task_id=#{taskId}
+            <if test="id!=null and id!=''">
+                AND c.task_id=#{id}
             </if>
         </where>
     </select>
