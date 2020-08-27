@@ -44,21 +44,6 @@ public class CommonTaskServiceImpl implements CommonTaskService {
     }
 
     @Override
-    public List<TimeSheetVo> getTimeSheet() {
-        return null;
-    }
-
-    @Override
-    public TimeSheetVo getTimeSheetById(int id) {
-        return null;
-    }
-
-    @Override
-    public CommonTree getCommonTreeById(int id) {
-        return null;
-    }
-
-    @Override
     public List<TreeVo> getProjects(int id) {
         return null;
     }
@@ -69,28 +54,8 @@ public class CommonTaskServiceImpl implements CommonTaskService {
     }
 
     @Override
-    public List<TreeVo> listProduct(SearchDict dict) {
-        return null;
-    }
-
-    @Override
-    public TreeVo getTreeById(SearchDict dict) {
-        return null;
-    }
-
-    @Override
     public List<TreeVo> listTree(SearchDict dict) {
         return null;
-    }
-
-    @Override
-    public List<CommonTree> listCommonTree(Integer parentId, int level) {
-        return null;
-    }
-
-    @Override
-    public int getType(int templateId) {
-        return 0;
     }
 
     @Override
@@ -104,58 +69,8 @@ public class CommonTaskServiceImpl implements CommonTaskService {
     }
 
     @Override
-    public void saveTimeSheet(TimeSheetVo sheetVo) {
-
-    }
-
-    @Override
     public List<TaskQuery> queryTask(SearchDict dict) {
         return null;
-    }
-
-    @Override
-    public void deleteTaskById(int id) {
-
-    }
-
-    @Override
-    public void updateStatus(Map map) {
-
-    }
-
-    @Override
-    public int saveTaskComment(TaskCommentVo commentVo) {
-        return 0;
-    }
-
-    @Override
-    public int saveTaskLog(TaskLogVo taskLogVo) {
-        return 0;
-    }
-
-    @Override
-    public void saveTemplate(TemplateVo templateVo) {
-
-    }
-
-    @Override
-    public List<TaskLogVo> queryTaskLog(SearchDict dict) {
-        return null;
-    }
-
-    @Override
-    public void updateTaskComment(TaskCommentVo commentVo) {
-
-    }
-
-    @Override
-    public void updateTimeSheetById(TimeSheetVo sheetVo) {
-
-    }
-
-    @Override
-    public void deleteSheetById(int id) {
-
     }
 
     @Override

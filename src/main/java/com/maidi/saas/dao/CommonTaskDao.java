@@ -15,12 +15,6 @@ import java.util.Map;
  */
 public interface CommonTaskDao {
 
-    List<TimeSheetVo> getTimeSheet();
-
-    TimeSheetVo getTimeSheetById(int id);
-
-    CommonTree getCommonTreeById(int id);
-
     List<TreeVo> getProjects(int id);
 
     ProductVo getProductById(int id);
@@ -33,9 +27,9 @@ public interface CommonTaskDao {
 
     List<TreeVo> listTree(SearchDict dict);
 
-    List<CommonTree> listCommonTree(@Param("parentId") Integer parentId, @Param("level") int level);
-
     int getType(int templateId);
+
+    List<TaskQuery> queryTask(SearchDict dict);
 
     List<TaskCommentVo> getTaskListById(int id);
 
@@ -45,33 +39,12 @@ public interface CommonTaskDao {
 
     List<TaskInfo> queryTaskInfo(SearchDict dict);
 
-    void saveTimeSheet(TimeSheetVo sheetVo);
-
-    List<TaskQuery> queryTask(SearchDict dict);
-
-    void deleteTaskById(int id);
-
-    void updateStatus(Map map);
-
     void saveTask(CommonTaskVo taskVo);
 
     void saveTaskGroup(TaskGroupVo groupVo);
 
     void saveProduct(ProductVo productVo);
 
-    int saveTaskComment(TaskCommentVo commentVo);
-
-    int saveTaskLog(TaskLogVo taskLogVo);
-
-    void saveTemplate(TemplateVo templateVo);
-
-    List<TaskLogVo> queryTaskLog(SearchDict dict);
-
-    void updateTaskComment(TaskCommentVo commentVo);
-
-    void updateTimeSheetById(TimeSheetVo sheetVo);
-
-    void deleteSheetById(int id);
 
     void updateProduct(ProductVo productVo);
 

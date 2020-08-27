@@ -184,42 +184,6 @@
         </where>
     </select>
 
-
-    <select id="listCommonTree" resultType="CommonTree" parameterType="int">
-        SELECT id,name,level,parent_id parentId FROM sm_timesheet
-        <!-- <where></where>相当于sql语句中的where关键字。这个标签还有一个功能就是自动会去掉第一个and.,比如下面两句sql代码，如果第一个满足的那么就会去掉and这个关键字。 -->
-        <where>
-            <if test="parentId!=null and parentId!=''">
-                and parent_id=#{parentId}
-            </if>
-            <if test="level!=null and level!=''">
-                and level =#{level}
-            </if>
-        </where>
-    </select>
-
-    <select id="getCommonTreeById" resultType="CommonTree" parameterType="int">
-        SELECT id,name,level,parent_id parentId FROM sm_timesheet
-        <where>
-            <if test="id!=null and id!=''">
-                AND id=#{id}
-            </if>
-        </where>
-    </select>
-
-    <select id="getTimeSheet" resultType="TimeSheetVo">
-        SELECT id,labor_hour laborHour FROM sm_timesheet
-    </select>
-
-    <select id="getTimeSheetById" resultType="TimeSheetVo" parameterType="int">
-        SELECT id,name laborName,labor_hour laborHour,flag,level,parent_id parentId FROM sm_timesheet
-        <where>
-            <if test="id!=null and id!=''">
-                AND id=#{id}
-            </if>
-        </where>
-    </select>
-
     <select id="getTaskListById" resultType="TaskCommentVo" parameterType="int">
         SELECT id,complete_rate completeRate,operator,notes,create_time createTime FROM sm_task_comment where task_id=#{id}
     </select>
@@ -277,28 +241,6 @@
             </if>
         </where>
         GROUP BY t.id
-    </select>
-    <select id="queryTaskLog" resultType="TaskLogVo" parameterType="SearchDict">
-        SELECT
-        l.id,
-        t.id taskId,
-        t.principal,
-        t.create_time createTime,
-        l.operator,
-        l.notes,
-        l.status,
-        l.update_time updateTime
-        FROM
-        sm_task t
-        INNER JOIN sm_task_log l ON t.id = l.task_id
-        <where>
-            <if test="principal!=null and principal!=''">
-                AND t.principal LIKE CONCAT('%',#{principal},'%')
-            </if>
-            <if test="updateTime!=null and updateTime!=''">
-                AND l.update_time BETWEEN #{updateTime} AND NOW()
-            </if>
-        </where>
     </select>
 
     <insert id="saveTask" parameterType="CommonTaskVo" keyProperty="id" useGeneratedKeys="true">
@@ -501,60 +443,6 @@
             <if test="description != null">description=#{description},</if>
         </set>
         WHERE id=#{id}
-    </update>
-
-    <update id="updateTimeSheetById" parameterType="TimeSheetVo">
-        UPDATE sm_timesheet
-        <set>
-            update_time=now(),
-            <if test="laborName != null">name=#{laborName},</if>
-            <if test="laborHour != null">labor_hour=#{laborHour},</if>
-        </set>
-        WHERE id=#{id}
-    </update>
-
-    <insert id="saveTaskComment" parameterType="TaskCommentVo" keyProperty="id" useGeneratedKeys="true">
-        INSERT INTO sm_task_comment (task_id,operator,notes,complete_rate) VALUES (#{taskId},#{operator},#{notes},#{completeRate})
-    </insert>
-
-    <update id="updateTaskComment" parameterType="TaskCommentVo">
-        UPDATE sm_task SET percentage=#{completeRate},description=#{notes},update_time=now() WHERE id=#{taskId}
-    </update>
-
-    <insert id="saveTaskLog" parameterType="TaskLogVo">
-        INSERT INTO sm_task_log (task_id,operator,notes,status) VALUES (#{taskId},#{operator},#{notes},#{status})
-    </insert>
-
-    <insert id="saveTimeSheet" parameterType="TimeSheetVo">
-        INSERT INTO sm_timesheet (name,labor_hour,parent_id,level,flag) VALUES (#{laborName},#{laborHour},#{parentId},#{level},#{flag})
-    </insert>
-
-    <insert id="saveTemplate" parameterType="TemplateVo">
-        INSERT INTO sm_template (project_id,name,notes,template_id,type_id) VALUES (#{projectId},#{templateName},#{notes},#{templateId},#{typeId})
-    </insert>
-
-    <select id="getType" parameterType="int" resultType="int">
-        SELECT type_id FROM sm_template
-        <where>
-            <if test="templateId !=null and templateId!=''">
-                AND id=#{templateId}
-            </if>
-        </where>
-    </select>
-
-    <delete id="deleteTaskById" parameterType="int">
-        DELETE FROM sm_task WHERE id=#{id}
-    </delete>
-
-    <delete id="deleteSheetById" parameterType="int">
-        DELETE FROM sm_timesheet WHERE id=#{id}
-    </delete>
-
-    <update id="updateStatus">
-        UPDATE sm_ecode SET operator_id=#{operatorId},status=#{status}, update_time=now() WHERE id IN
-        <foreach collection="list" index="index" item="id" separator="," open="(" close=")">
-            #{id}
-        </foreach>
     </update>
 
 </mapper>
