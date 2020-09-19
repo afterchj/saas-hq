@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.maidi</groupId>
-    <artifactId>saas-smart-hq</artifactId>
+    <artifactId>saas-hq</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>saas-smart-hq</name>
+    <name>saas-hq</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
