@@ -1,6 +1,8 @@
 package com.maidi.saas.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.maidi.saas.entity.dd.ResultDict;
 import com.maidi.saas.entity.dd.SearchDict;
 import com.maidi.saas.entity.vo.*;
@@ -108,10 +110,10 @@ public class ProjectController extends BaseController {
         Map result = new HashMap();
         result.put("code", ResultDict.SUCCESS.getCode());
         result.put("msg", ResultDict.SUCCESS.getValue());
-//        PageHelper.startPage(dict.getPageNum(), dict.getPageSize());
+        PageHelper.startPage(dict.getPageNum(), dict.getPageSize());
         List<ProjectQuery> projectQueries = projectService.queryProject(dict);
-//        PageInfo<ProjectQuery> pageInfo = new PageInfo<>(projectQueries);
-        result.put("data", projectQueries);
+        PageInfo<ProjectQuery> pageInfo = new PageInfo<>(projectQueries);
+        result.put("data", pageInfo);
         return result;
     }
 
